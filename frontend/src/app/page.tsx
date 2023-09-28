@@ -7,14 +7,11 @@ import Header from '@/components/Header';
 // import appStore from '../store/appStore';
 import { Element, animateScroll as scroll } from 'react-scroll'; 
 
-interface AnimatedBoxProps {
-    isVisible: boolean;
-}
-
 const Main: React.FC = () => {
     const [isVisible1, setIsVisible1] = useState(false);
     const [isVisible2, setIsVisible2] = useState(false);
     const [isVisible3, setIsVisible3] = useState(false);
+
     const targetRef1 = useRef<HTMLDivElement | null>(null);
     const targetRef2 = useRef<HTMLDivElement | null>(null);
     const targetRef3 = useRef<HTMLDivElement | null>(null);
@@ -23,7 +20,7 @@ const Main: React.FC = () => {
         const options = {
             root: null,
             rootMargin: '0px',
-            threshold: 0.5, // Change threshold to trigger animation when partially visible
+            threshold: 0.5,
         };
 
         const handleIntersect1: IntersectionObserverCallback = (entries) => {
@@ -37,6 +34,7 @@ const Main: React.FC = () => {
                 setIsVisible2(entry.isIntersecting);
             });
         };
+
         const handleIntersect3: IntersectionObserverCallback = (entries) => {
             entries.forEach((entry) => {
                 setIsVisible3(entry.isIntersecting);
@@ -90,14 +88,14 @@ const Main: React.FC = () => {
                         </Container_1_page_1_element_4>
                     </Container_1_page_1>
                     <Container_1_page_2>
-                        <AnimatedBox1 ref={targetRef1} isVisible={isVisible1}>
+                        <AnimatedBox1 ref={targetRef1} style={{ opacity: isVisible1 ? 1 : 0 }}>
                             <img src="./image/temp_img.png" style={{ width: "600px", height: "360px", marginTop:"140px"}}></img>
                         </AnimatedBox1>
                     </Container_1_page_2>
                 </Container_1>
                 <Container_2>
                     <Container_2_page_1>
-                        <AnimatedBox2 ref={targetRef2} isVisible={isVisible2}>
+                        <AnimatedBox2 ref={targetRef2} style={{ opacity: isVisible2 ? 1 : 0 }}>
                             <img src="./image/temp_img2.png" style={{ width: "600px", height: "340px"}}></img>
                         </AnimatedBox2>
                     </Container_2_page_1>
@@ -134,7 +132,7 @@ const Main: React.FC = () => {
                         </Container_3_page_1_element_4>
                     </Container_3_page_1>
                     <Container_3_page_2>
-                        <AnimatedBox3 ref={targetRef3} isVisible={isVisible3}>
+                        <AnimatedBox3 ref={targetRef3} style={{ opacity: isVisible3 ? 1 : 0 }}>
                             <img src="./image/temp_img.png" style={{ width: "600px", height: "360px", marginTop:"140px"}}></img>
                         </AnimatedBox3>
                     </Container_3_page_2>
@@ -453,30 +451,27 @@ const Container_3_page_2 = styled.div`
     height : 100%;
 `;
 
-const AnimatedBox1 = styled.div<AnimatedBoxProps>`
+const AnimatedBox1 = styled.div`
   width: 100%;
   height:340px;
 //   background-color: blue;
   position: absolute;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   transition: opacity 1s ease-in-out;
 //   margin-top : 170px;
 `;
-const AnimatedBox2 = styled.div<AnimatedBoxProps>`
+const AnimatedBox2 = styled.div`
   width: 100%;
   height:340px;
 //   background-color: blue;
   position: absolute;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   transition: opacity 1s ease-in-out;
   margin-top : 170px;
 `;
-const AnimatedBox3 = styled.div<AnimatedBoxProps>`
+const AnimatedBox3 = styled.div`
   width: 100%;
   height:340px;
 //   background-color: blue;
   position: absolute;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   transition: opacity 1s ease-in-out;
 `;
 
