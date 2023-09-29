@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 // import { Link, useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import Header from '@/components/Header';
-
+import Banner from '@/components/Banner';
 import axios from 'axios';
 import Link from "next/link";
 
@@ -20,8 +20,21 @@ interface BoardItem {
     view : number;
 }
 
+const imageUrls = [
+    '../image/boardbackgroundimg1.png',
+    '../image/boardbackgroundimg2.png',
+    '../image/boardbackgroundimg3.png',
+    // Add more image URLs as needed
+];
+function getRandomImageUrl() {
+    const randomIndex = Math.floor(Math.random() * imageUrls.length);
+    return imageUrls[randomIndex];
+}
+
 const Board = () => {
     const [boardData, setBoardData] = useState<BoardItem[]>([]); 
+
+
 
 
     const access_token = localStorage.getItem('access-token');
@@ -55,69 +68,55 @@ const Board = () => {
     useEffect(() => {
         // 페이지가 로드될 때 한 번만 호출되는 로직
         handleBoardList();
-    }, []);
 
+        // 일정 시간 간격으로 배너 이미지 변경
+    }, []);
 
     return (
         <div>
             <Container>
                 <Header></Header>
-                <Container_main>
-                    <Container_main_text_container>
-                        <Container_main_title>
-                            비대면 계약 서비스 BLOCKER를 통해 다양한 계약서들을 만나보세요!
-                        </Container_main_title>
-                        <Container_main_content>
-                            간편하게 게시글을 올리기나, 현재 진행중인 계약을 확인 수 있고, 채팅을 통해서 다른 사람과의 계약을 진행할 수 있습니다. 
-                        </Container_main_content>
-                        <Container_main_btn>
-                            <Link href="/postwrite">
-                                <Container_main_btn_1>게시글 작성하기</Container_main_btn_1>
-                            </Link>
-                            {/* <StyledLink to="/contracts" style={{ textDecoration: 'none' }}> */}
-                            <Link href="/contracts">
-                                <Container_main_btn_2>진행상황 보러가기</Container_main_btn_2>
-                            </Link>
-                            {/* </StyledLink> */}
-                        </Container_main_btn>
-                    </Container_main_text_container>
-                </Container_main>
+ 
+                <Banner></Banner>
+                <Board_title>Board list</Board_title>
                 <Container_board_frame>
                     {boardData.map((item, index) => (
                         // <StyledLink to={`/board/${item.boardId}`} style={{ textDecoration: 'none' }} onClick={() => localStorage.setItem("boardId", item.boardId.toString())}>
-                        <Link href={`/boardObject/${item.boardId}`}  onClick={() => localStorage.setItem("boardId", item.boardId.toString())}>
+                        <Link href={`/boardObject/${item.boardId}`} style={{ textDecoration: 'none' }}  onClick={() => localStorage.setItem("boardId", item.boardId.toString())}>
                             <Container_board_item key={index}>
-                                <Container_board_item_info>
-                                    <img src="../image/see.png" style={{ width: "18px", height: "18px", marginTop:"1px", marginRight:"4px"}}></img>
-                                    {item.view}
-                                    <img src="../image/bookmark.png" style={{ width: "15px", height: "15px",marginTop:"2px", marginRight:"2px", marginLeft : "7px"}}></img>
-                                    {item.bookmarkCount}
-                                </Container_board_item_info>
-                                <Container_board_title_frame>
-                                    {item.title.length > 8 ? `${item.title.substring(0, 8)}...` : item.title}
-                                </Container_board_title_frame>
-                                <Container_board_content_frame>
-                                    {item.content.length > 50 ? `${item.content.substring(0, 50)}...` : item.content}
-                                </Container_board_content_frame>
-                                <Container_board_line>
-
-                                </Container_board_line>
-                                <Container_board_profile>
-                                    <Container_board_profile_img>
-                                        {/* 이미지가 들어가야 하는 부분 */}
-                                        {item.representImage ? (<img src={item.representImage} alt="이미지" style={{ width: '140px', height: '135px'}}/>
+                                <Container_board_background_img style={{ backgroundImage: `url(${getRandomImageUrl()})` }}>
+                                    <Container_board_item_info>
+                                        <img src="../image/see.png" style={{ width: "18px", height: "18px", marginTop:"1px", marginRight:"4px"}}></img>
+                                        {item.view}
+                                        <img src="../image/bookmark.png" style={{ width: "15px", height: "15px",marginTop:"2px", marginRight:"2px", marginLeft : "7px"}}></img>
+                                        {item.bookmarkCount}
+                                    </Container_board_item_info>
+                                    {/* <Container_board_profile_img>
+                                        {item.representImage ? (<img src={item.representImage} alt="이미지" style={{ width: '300px', height: '135px'}}/>
                                         ) : (<img src="../image/no_img.png" alt="대체 이미지" style={{ width: '140px', height: '135px' }}/>)}
-                                    </Container_board_profile_img>
-                                    <Container_board_profile_frame>
-                                        <Container_board_profile_user_info1>
+                                    </Container_board_profile_img> */}
+
+                                </Container_board_background_img>
+
+                                <Container_board_profile>
+                                    <Container_board_profile_user_info1>
                                             {item.name}
-                                        </Container_board_profile_user_info1>
-                                        <Container_board_profile_user_info2>
-                                            게시일 : {item.createdAt.split("T")[0]}
-                                        </Container_board_profile_user_info2>
-                                        <Container_board_profile_user_info3>
-                                            수정일 : {item.modifiedAt.split("T")[0]}
-                                        </Container_board_profile_user_info3>
+                                            <Container_board_profile_user_info2>
+                                                게시일 : {item.createdAt.split("T")[0]}
+                                            </Container_board_profile_user_info2>
+                                            <Container_board_profile_user_info3>
+                                                수정일 : {item.modifiedAt.split("T")[0]}
+                                            </Container_board_profile_user_info3>
+                                    </Container_board_profile_user_info1>
+                                    <Container_board_title_frame>
+                                        {item.title.length > 8 ? `${item.title.substring(0, 25)}...` : item.title}
+                                    </Container_board_title_frame>
+                                    <Container_board_content_frame>
+                                        {item.content.length > 50 ? `${item.content.substring(0, 50)}...` : item.content}
+                                    </Container_board_content_frame>
+                                    <Container_board_profile_frame>
+
+
                                     </Container_board_profile_frame>
                                 </Container_board_profile>
                             </Container_board_item>
@@ -134,97 +133,33 @@ const Container = styled.div`
     height: fit-content;
     width: 100%;
 `;
-const Container_main = styled.div`
-    // position : relative;
-    background : #e8edf1;
-    position : relative;
-    height: 400px;
-    width: 100%;
-`;
-const Container_main_text_container = styled.div`
-    position : absolute;
-    // background : green;
-    height: 200px;
-    width: 100%;
-    margin-top:180px;
-
-`;
-const Container_main_title = styled.div`
-    postion:relative;
-    // background : red;
-    height: fit-content;
-    width: 100%;
-    
-    display:flex;
-    align-items : center;
-    justify-content : center;
-
-    font-size : 25px;
-    font-weight : bold;
-`;
-const Container_main_content = styled.div`
-    // background : aqua;
-    height: 40px;
-    width: 100%;
-    color : #252525;
-
-    display:flex;
-    align-items : center;
-    justify-content : center;
-`;
-const Container_main_btn = styled.div`
-    // background : aqua;
-    height: 50px;
-    width: 100%;
-    color : #252525;
-
-    display:flex;
-    align-items : center;
-    justify-content : center;
-
-    margin-top : 20px;
-`;
-const Container_main_btn_1 = styled.div`
-    background : black;
-    height: 50px;
-    width: 180px;
-    color : #ffffff;
-
-    display:flex;
-    align-items : center;
-    justify-content : center;
-    margin-right:10px;
-
-    border-radius : 7px;
-
-    font-weight:bold;
-
-    cursor : pointer;
-`;
-const Container_main_btn_2 = styled.div`
-    background : black;
-    height: 50px;
-    width: 180px;
-    color : #ffffff;
-
-    display:flex;
-    align-items : center;
-    justify-content : center;
-    margin-left:10px;
-
-    border-radius : 7px;
-
-    font-weight:bold;
-    cursor : pointer;
-
-`;
-const Container_board_frame = styled.div`
+const Board_title = styled.div`
     position : absolute;
     // background : aqua;
 
     height: fit-content;
     height : fit-content;
+    width: 1260px;
+    margin-top : 220px;
+
+    left : 50%;
+    transform : translate(-50%);
+
+    font-size : 30px;
+    font-weight : bold;
+    color : #aeaeae;
+
+    border-bottom : 1px solid #e4e4e4;
+    padding-bottom : 15px;
+`;
+const Container_board_frame = styled.div`
+    position : absolute;
+    // background : red;
+
+    height: fit-content;
+    height : fit-content;
     width: 1300px;
+    margin-top : 240px;
 
     left : 50%;
     transform : translate(-50%);
@@ -233,85 +168,47 @@ const Container_board_frame = styled.div`
     flex-wrap: wrap;
 `;
 const Container_board_item = styled.div`
-    background : white;
-    width : 300px;
-    height : 350px;
-    margin-top : 20px;
+    // background : red;
+
+    width : 406px;
+    height : 330px;
+    margin-top :50px;
     margin-left : 20px;
     border-radius : 3px;
-    box-shadow: 2px 2px 10px 1px rgb(196, 196, 196);
+
+    
+`;
+const Container_board_background_img = styled.div`
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    // background : green;
+    height : 250px;
+    border-radius : 5px;
+
     &:hover {
         filter: brightness(95%); 
         cursor : pointer;
     }
 `;
 const Container_board_item_info = styled.div`
+    // background : blue;
     position : relative;
-    height : 35px;
-    width : 290px;
+    height : 20px;
+    width : 396px;
     // background : red;
     display: flex;
     justify-content: flex-end; /* 자식 요소들을 오른쪽 끝으로 정렬 */
     font-size : 14px;
     padding-right : 10px;
-    padding-top : 11px;
-
+    padding-top : 7px;
+    color : #ffffff;
     
 `;
-const Container_board_title_frame = styled.div`
-    // background : aqua;
-    height : 60px;
-    width : 280px;
-    
-    display : flex;
-    justify-content : center;
-    align-items:center;
-    
-    font-size : 23px;
-    font-weight:bold;
-    padding-left : 10px;
-    padding-right : 10px;
 
-    margin-top:10px;
-`;
-const Container_board_content_frame = styled.div`
-    // background : red;
-    height : 70px;
-    width : 280px;
-    width : fit-content;
-    display : flex;
-    align-items:center;
-    justify-content : center;
-
-    color: #9c9c9c;
-    font-size : 13px;
-    font-weight:bold;
-
-    padding-left : 10px;
-    padding-right : 10px;
-`;
-const Container_board_line = styled.div`
-    background : #d1d1d1;
-    height : 2px;
-    width : 280px;  
-    display : flex;
-    align-items:center;
-    justify-content : center;
-
-    font-size : 13px;
-    font-weight:bold;
-    margin-left : 10px;
-    margin-top : 5px;
-`;
 const Container_board_profile = styled.div`
     // background : #d1d1d1;
-    height : 135px;
-    width : 280px;  
-    display : flex;
-
-    margin-top : 10px;
-    margin-left : 10px;
-    margin-right : 10px;
+    height : 80px;
+    width : 100%;  
 `;
 const Container_board_profile_img = styled.div`
     // background : red;
@@ -324,20 +221,21 @@ const Container_board_profile_frame = styled.div`
     width : 140px;  
 `;
 const Container_board_profile_user_info1 = styled.div`
-    // background : red;
-    width : 140px;
+    // background : green;
+    width : 100%;
     height : 20px;
-    margin-top : 32px;
+
+    font-size : 15px;
+    font-weight : bold;
+    color : #435DF1;
 
     display : flex;
-    justify-content : center;
     align-items : center;
 
-    font-size : 16px;
-    font-weight:bold;
+    margin-top : 5px;
 `;
 const Container_board_profile_user_info2 = styled.div`
-    // background : red;
+    // background : yellow;
     width : 140px;
     height : 20px;
 
@@ -345,15 +243,13 @@ const Container_board_profile_user_info2 = styled.div`
     justify-content : center;
     align-items : center;
 
-    font-size : 13px;
-    font-weight:bold;
-    color : #d1d1d1;
-
-    margin-top : 10px;
+    font-size : 12px;
+    color : grey;
+    
 `;
 
 const Container_board_profile_user_info3 = styled.div`
-    // background : red;
+    // background : yellow;
     width : 140px;
     height : 20px;
 
@@ -361,11 +257,35 @@ const Container_board_profile_user_info3 = styled.div`
     justify-content : center;
     align-items : center;
 
+    font-size : 12px;
+    color : grey;
+    
+`;
+const Container_board_title_frame = styled.div`
+    // background : blue;
+    height : 40px;
+    width : 280px;
+    
+    display : flex;
+    align-items:center;
+    
+    font-size : 30px;
+    font-weight:bold;
+
+    color : black;
+`;
+const Container_board_content_frame = styled.div`
+    // background : yellow;
+    height : 20px;
+    width : 100%;
+    
+    display : flex;
+    align-items:center;
+
+    color: grey;
     font-size : 13px;
     font-weight:bold;
-    color : #d1d1d1;
 `;
-
 
 
 export default Board;

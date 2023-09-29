@@ -51,7 +51,7 @@ const Contractwrite = () => {
                 <Container_content placeholder='내용을 작성해주세요.' onChange={handlecontentChange}></Container_content>
                 <Container_btn_container>
                     {/* <StyledLink to="/contracts" style={{ textDecoration: 'none' }}> */}
-                    <Link href="/contracts">
+                    <Link href="/contracts" style={{ textDecoration: 'none' }}>
                         <Container_btn_container_b1>취소</Container_btn_container_b1>
                     </Link>
                     {/* </StyledLink> */}

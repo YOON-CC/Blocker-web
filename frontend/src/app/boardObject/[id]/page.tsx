@@ -7,6 +7,7 @@ import axios from 'axios';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBookmark, faEye, faCheck, faComment, faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from "next/link";
 
 const Post = () => {
 
@@ -168,9 +169,9 @@ const Post = () => {
             {postObject_isWriter === true && 
                 <Edit_container>
                     <Edit_container_btn_container>
-                        {/* <StyledLink to={`/postedit/${boardId}`} style={{ textDecoration: 'none' }}> */}
+                        <Link href={`/boardEdit/${boardId}}`} style={{ textDecoration: 'none' }}>
                             <Edit_container_b1>편집</Edit_container_b1>
-                        {/* </StyledLink> */}
+                        </Link>
                         <form onSubmit={handleBoardDelete}>
                             <Edit_container_b2>삭제</Edit_container_b2>
                         </form>

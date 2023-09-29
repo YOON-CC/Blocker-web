@@ -203,7 +203,7 @@ const Contracts_object = () => {
             {contractType === 'NOT_PROCEED' && (
                 <Container_btn_container>
                     <Container_btn_container_b1>취소</Container_btn_container_b1>
-                    <Link href='/contractEdit'  onClick={() => localStorage.setItem("contractId_1", contractObject_contractId.toString())}>
+                    <Link href='/contractEdit' style={{ textDecoration: 'none' }} onClick={() => localStorage.setItem("contractId_1", contractObject_contractId.toString())}>
                         <Container_btn_container_b2>편집</Container_btn_container_b2>
                     </Link>
                     <form onSubmit={handleContractDelete}>

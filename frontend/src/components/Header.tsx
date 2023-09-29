@@ -40,7 +40,7 @@ const Header = () => {
             {appStore.value === 2 && <Login></Login>}
             {appStore.value === 3 && <Signature></Signature>}
             {/* <StyledLink to="/" style={{ textDecoration: 'none' }}> */}
-            <Link href="/">
+            <Link href="/" style={{ textDecoration: 'none' , color : 'black'}}>
                 <Container_title>
                     BLOCKER
                 </Container_title>
@@ -50,7 +50,7 @@ const Header = () => {
                 
 
                 {/* <StyledLink to="/board" style={{ textDecoration: 'none' }}> */}
-                <Link href="/board">
+                <Link href="/board" style={{ textDecoration: 'none' }}>
 
                     <Container_menu_item>
                         게시글
@@ -63,7 +63,7 @@ const Header = () => {
 
 
                 {/* <StyledLink to="/postwrite" style={{ textDecoration: 'none' }}> */}
-                <Link href="/postwrite">
+                <Link href="/postwrite" style={{ textDecoration: 'none' }}>
 
                     <Container_menu_item>
                         게시글작성
@@ -71,7 +71,7 @@ const Header = () => {
                 </Link>
                 {/* </StyledLink> */}
                 {/* <StyledLink to="/contracts" style={{ textDecoration: 'none' }}> */}
-                <Link href="/contracts">
+                <Link href="/contracts" style={{ textDecoration: 'none' }}>
                     <Container_menu_item>
                         계약서/작성
                     </Container_menu_item>

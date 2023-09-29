@@ -6,10 +6,72 @@ import styled from 'styled-components';
 import Header from '@/components/Header';
 import axios from 'axios';
 
-const Postwrite = () => {
+const Postedit = () => {
     const access_token = localStorage.getItem('access-token');
     console.log(access_token)
-    
+    const boardId = localStorage.getItem('boardId');
+
+
+    //게시글객체 기본 정보
+    const [postObject_boardId, setPostObject_boardId] = useState(0); 
+    const [postObject_title, setPostObject_title] = useState(''); 
+    const [postObject_name, setPostObject_name] = useState(''); 
+    const [postObject_content, setPostObject_content] = useState(''); 
+    const [postObject_representImage, setPostObject_representImage] = useState(''); 
+    const [postObject_view, setPostObject_view] = useState(0); 
+    const [postObject_bookmarkCount, setPostObject_bookmarkCount] = useState(0); 
+    const [postObject_createdAt, setPostObject_createdAt] = useState(''); 
+    const [postObject_modifiedAt, setPostObject_modifiedAt] = useState(''); 
+    const [postObject_images_idx, setPostObject_images_idx] = useState([]); 
+    const [postObject_images_addr, setPostObject_images_addr] = useState([]); 
+
+    const [postObject_info, setPostObject_info] = useState(''); 
+    const [postObject_contractId, setPostObject_contractId] = useState(0); 
+    const [postObject_isWriter, setPostObject_isWriter] = useState(false); 
+    const [postObject_isBookmark, setPostObject_isBookmark] = useState(false); 
+
+    //북마크 여부
+
+
+    //초반 데이터
+    const handlePostObject = async () => {
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/boards/${boardId}`, {
+                headers: {
+                    'Authorization': access_token,
+                }
+            });
+
+            
+            if (response.status === 200) {
+                setPostObject_boardId(response.data.boardId);
+                setPostObject_title(response.data.title);
+                setPostObject_name(response.data.name);
+                setPostObject_content(response.data.content);
+                setPostObject_representImage(response.data.representImage);
+                setPostObject_view(response.data.view);
+                setPostObject_bookmarkCount(response.data.bookmarkCount);
+                setPostObject_createdAt(response.data.createdAt);
+                setPostObject_modifiedAt(response.data.modifiedAt);
+                setPostObject_images_idx(response.data.images.map((image: { imageId: number; }) => image.imageId));
+                setPostObject_images_addr(response.data.images.map((image: { imageAddress: string; }) => image.imageAddress));
+                setPostObject_info(response.data.info);
+                setPostObject_contractId(response.data.contractId);
+                setPostObject_isWriter(response.data.isWriter);
+                setPostObject_isBookmark(response.data.isBookmark);
+            }
+
+        } catch (error) {
+
+        }
+    };
+
+    useEffect(() => {
+        // 페이지가 로드될 때 한 번만 호출되는 로직
+        handlePostObject();
+    }, []);
+
 
     //로컬에서 이미지 가져오는 코드
     const [selectedImages, setSelectedImages] = useState<File[]>([]);
@@ -71,17 +133,18 @@ const Postwrite = () => {
         setContent(event.target.value)
     };
 
-    const handleBoardPost = async (event : any) => {
+    const handleBoardEdit = async (event : any) => {
         event.preventDefault();
         console.log(images)
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/boards`, {
+            const response = await axios.patch(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/boards/${boardId}`, {
                 title: title,
                 content : content,
                 info : "부산 남구 대연동 부경대학교",
                 representImage : images[0],
                 contractId : 25,
-                images : images,
+                deleteImageIds : removeImg,
+                addImageAddresses : images,
             }, {
                 headers: {
                     'Authorization': access_token,
@@ -97,12 +160,35 @@ const Postwrite = () => {
         }
     };
 
+
+    //삭제할 이미지
+    const [removeImg, setRemoveImg] = useState<number[]>([]);
+
+    const handleImageClick = (number: number) => {
+        if (removeImg.includes(number)) {
+            // 이미 선택된 숫자라면 선택 해제
+            setRemoveImg(removeImg.filter(item => item !== number));
+        } else {
+            // 선택되지 않은 숫자라면 선택 추가
+            setRemoveImg([...removeImg, number]);
+        }
+    };
+
+    console.log(removeImg)
+
     return (
         <div>
             <Header />
             <Container>
-                <Container_tip>🙌게시글을 작성하고, 동업자를 구해보세요!</Container_tip>
-                <Container_title placeholder='제목을 작성해주세요.' onChange={handletitleChange}></Container_title>
+                <Container_tip>EDIT</Container_tip>
+                <Container_title placeholder={postObject_title} onChange={handletitleChange}></Container_title>
+                <Container_default_img>
+                    {postObject_images_idx.map((id, index) => (
+                        <div key={id} onClick={() => handleImageClick(index)}>
+                            <img src={postObject_images_addr[index]} alt="이미지" style={{ width: '50px', height: '50px', marginLeft: '15px', cursor : 'pointer', filter: removeImg.includes(index) ? 'brightness(0.3)' : 'none'}}/>
+                        </div>
+                    ))}
+                </Container_default_img>
                 <Container_img_select>
                     {selectedImages.map((image, index) => (
                         <div key={index}>
@@ -116,10 +202,10 @@ const Postwrite = () => {
                     <Container_info_container_select_location></Container_info_container_select_location>
                     <Container_info_container_select_contract></Container_info_container_select_contract>
                 </Container_info_container>
-                <Container_content placeholder='내용을 작성해주세요.' onChange={handlecontentChange}></Container_content>
-                <form onSubmit={handleBoardPost}>
+                <Container_content placeholder={postObject_content} onChange={handlecontentChange}></Container_content>
+                <form onSubmit={handleBoardEdit}>
                     <Container_btn_container>
-                        {/* <StyledLink to="/board" style={{ textDecoration: 'none' }}> */}
+                        {/* <StyledLink to={`/board/${boardId}`} style={{ textDecoration: 'none' }}> */}
                             <Container_btn_container_b1>취소</Container_btn_container_b1>
                         {/* </StyledLink> */}
                         <Container_btn_container_b2>작성</Container_btn_container_b2>
@@ -170,6 +256,27 @@ const Container_title = styled.input`
 
     padding-left : 10px;
     margin-top : 10px;
+
+    border-radius : 4px;
+`;
+const Container_default_img = styled.div`
+    height: 55px;
+    width: 587px;
+
+    display : flex;
+    justify-content : center;
+    align-items : center;
+
+    font-size : 12px;
+    font-weight : bold;
+    color : black;
+
+    border : 2px solid #e3e3e3;
+    outline : none;
+
+    padding-left : 10px;
+    margin-top : 10px;
+    padding-top : 4px;
 
     border-radius : 4px;
 `;
@@ -330,4 +437,4 @@ const Container_btn_container_b2 = styled.button`
 `;
 
 
-export default Postwrite;
+export default Postedit;

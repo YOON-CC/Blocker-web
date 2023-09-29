@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Sans+KR&family=Jua&family=Lilita+One&family=Roboto&family=Rubik+Mono+One&family=Single+Day&display=swap');
-
 body {
   /* overflow: hidden; */
   margin: 0;
@@ -7,6 +6,7 @@ body {
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   sans-serif;
   /* padding: 0; */
+  /* background-color: #aeaeae; */
 }
 /* :root {
   --max-width: 1100px;
