@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Header from '@/components/Header';
 // import appStore from '../store/appStore';
 import { Element, animateScroll as scroll } from 'react-scroll'; 
+import appStore from '@/store/appStore';
 
 const Main: React.FC = () => {
     const [isVisible1, setIsVisible1] = useState(false);
@@ -63,7 +64,8 @@ const Main: React.FC = () => {
             observer3.disconnect();
         };
     }, []);
-        
+    console.log(appStore.value)
+
     return (
         <div>
             <Container>

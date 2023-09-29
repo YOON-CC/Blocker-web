@@ -5,8 +5,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 // import { deleteCookie } from "../utils/cookieUtils";
 // import Login from '../pages/Login';
-// import appStore from '../store/appStore';
-
+import appStore from '@/store/appStore';
+import Link from "next/link";
+import { observer } from 'mobx-react-lite';
+import Login from '@/app/Login';
 
 const Header = () => {
     // const navigate = useNavigate();
@@ -27,24 +29,31 @@ const Header = () => {
 
     /*로그인으로 이동하도록 하기*/
     const handleGotoLogin = () => {
-        // appStore.setValue(2)
+        appStore.setValue(2)
     };
     
+    console.log(appStore.value)
 
     return (
         <Container>
+            {appStore.value === 2 && <Login></Login>}
             {/* <StyledLink to="/" style={{ textDecoration: 'none' }}> */}
+            <Link href="/">
                 <Container_title>
                     BLOCKER
                 </Container_title>
+            </Link>
             {/* </StyledLink> */}
             <Container_menu>
                 
 
                 {/* <StyledLink to="/board" style={{ textDecoration: 'none' }}> */}
+                <Link href="/board">
+
                     <Container_menu_item>
                         게시글
                     </Container_menu_item>
+                </Link>
                 {/* </StyledLink> */}
                 <Container_menu_item onClick={handleGotoLogin}> 
                     게시글
@@ -203,4 +212,4 @@ const DropdownItem = styled.div`
 `;
 
 
-export default Header;
+export default observer(Header);

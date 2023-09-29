@@ -1,6 +1,10 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import appStore from '@/store/appStore'
+import Login from './Login'
+// import { observer } from 'mobx-react-lite';
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,9 +18,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
   return (
+    
     <html lang="en">
       <body className={inter.className}>{children}</body>
+      {/* {appStore.value === 2 && <Login></Login>} */}
+
     </html>
   )
 }
