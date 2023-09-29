@@ -6,7 +6,9 @@ import Login from './Login'
 // import { observer } from 'mobx-react-lite';
 
 
+
 const inter = Inter({ subsets: ['latin'] })
+
 
 export const metadata: Metadata = {
   title: 'Create Next App',

@@ -9,6 +9,7 @@ import appStore from '@/store/appStore';
 import Link from "next/link";
 import { observer } from 'mobx-react-lite';
 import Login from '@/app/Login';
+import Signature from '@/app/Signature';
 
 const Header = () => {
     // const navigate = useNavigate();
@@ -37,6 +38,7 @@ const Header = () => {
     return (
         <Container>
             {appStore.value === 2 && <Login></Login>}
+            {appStore.value === 3 && <Signature></Signature>}
             {/* <StyledLink to="/" style={{ textDecoration: 'none' }}> */}
             <Link href="/">
                 <Container_title>
@@ -61,14 +63,20 @@ const Header = () => {
 
 
                 {/* <StyledLink to="/postwrite" style={{ textDecoration: 'none' }}> */}
+                <Link href="/postwrite">
+
                     <Container_menu_item>
                         게시글작성
                     </Container_menu_item>
+                </Link>
                 {/* </StyledLink> */}
                 {/* <StyledLink to="/contracts" style={{ textDecoration: 'none' }}> */}
+                <Link href="/contracts">
                     <Container_menu_item>
                         계약서/작성
                     </Container_menu_item>
+                </Link>
+
                 {/* </StyledLink> */}
                 {/* <StyledLink to="/vertification" style={{ textDecoration: 'none' }}> */}
                     <Container_menu_item>

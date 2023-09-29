@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Header from '@/components/Header';
 
 import axios from 'axios';
+import Link from "next/link";
 
 
 interface BoardItem {
@@ -70,11 +71,13 @@ const Board = () => {
                             간편하게 게시글을 올리기나, 현재 진행중인 계약을 확인 수 있고, 채팅을 통해서 다른 사람과의 계약을 진행할 수 있습니다. 
                         </Container_main_content>
                         <Container_main_btn>
-                            {/* <StyledLink to="/postwrite" style={{ textDecoration: 'none' }}> */}
+                            <Link href="/postwrite">
                                 <Container_main_btn_1>게시글 작성하기</Container_main_btn_1>
-                            {/* </StyledLink> */}
+                            </Link>
                             {/* <StyledLink to="/contracts" style={{ textDecoration: 'none' }}> */}
+                            <Link href="/contracts">
                                 <Container_main_btn_2>진행상황 보러가기</Container_main_btn_2>
+                            </Link>
                             {/* </StyledLink> */}
                         </Container_main_btn>
                     </Container_main_text_container>
@@ -82,6 +85,7 @@ const Board = () => {
                 <Container_board_frame>
                     {boardData.map((item, index) => (
                         // <StyledLink to={`/board/${item.boardId}`} style={{ textDecoration: 'none' }} onClick={() => localStorage.setItem("boardId", item.boardId.toString())}>
+                        <Link href={`/boardObject/${item.boardId}`}  onClick={() => localStorage.setItem("boardId", item.boardId.toString())}>
                             <Container_board_item key={index}>
                                 <Container_board_item_info>
                                     <img src="../image/see.png" style={{ width: "18px", height: "18px", marginTop:"1px", marginRight:"4px"}}></img>
@@ -117,6 +121,7 @@ const Board = () => {
                                     </Container_board_profile_frame>
                                 </Container_board_profile>
                             </Container_board_item>
+                        </Link>  
                     ))}
                 </Container_board_frame>
             </Container>
