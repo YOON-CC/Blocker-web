@@ -81,7 +81,6 @@ const Board = () => {
                 <Board_title>Board list</Board_title>
                 <Container_board_frame>
                     {boardData.map((item, index) => (
-                        // <StyledLink to={`/board/${item.boardId}`} style={{ textDecoration: 'none' }} onClick={() => localStorage.setItem("boardId", item.boardId.toString())}>
                         <Link href={`/boardObject/${item.boardId}`} style={{ textDecoration: 'none' }}  onClick={() => localStorage.setItem("boardId", item.boardId.toString())}>
                             <Container_board_item key={index}>
                                 <Container_board_background_img style={{ backgroundImage: `url(${getRandomImageUrl()})` }}>
@@ -91,10 +90,6 @@ const Board = () => {
                                         <img src="../image/bookmark.png" style={{ width: "15px", height: "15px",marginTop:"2px", marginRight:"2px", marginLeft : "7px"}}></img>
                                         {item.bookmarkCount}
                                     </Container_board_item_info>
-                                    {/* <Container_board_profile_img>
-                                        {item.representImage ? (<img src={item.representImage} alt="이미지" style={{ width: '300px', height: '135px'}}/>
-                                        ) : (<img src="../image/no_img.png" alt="대체 이미지" style={{ width: '140px', height: '135px' }}/>)}
-                                    </Container_board_profile_img> */}
 
                                 </Container_board_background_img>
 
@@ -109,7 +104,7 @@ const Board = () => {
                                             </Container_board_profile_user_info3>
                                     </Container_board_profile_user_info1>
                                     <Container_board_title_frame>
-                                        {item.title.length > 8 ? `${item.title.substring(0, 25)}...` : item.title}
+                                        {item.title.length > 8 ? `${item.title.substring(0, )}...` : item.title}
                                     </Container_board_title_frame>
                                     <Container_board_content_frame>
                                         {item.content.length > 50 ? `${item.content.substring(0, 50)}...` : item.content}
@@ -167,6 +162,7 @@ const Container_board_frame = styled.div`
     display : flex;
     flex-wrap: wrap;
 `;
+
 const Container_board_item = styled.div`
     // background : red;
 
@@ -175,9 +171,8 @@ const Container_board_item = styled.div`
     margin-top :50px;
     margin-left : 20px;
     border-radius : 3px;
-
-    
 `;
+
 const Container_board_background_img = styled.div`
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -189,6 +184,7 @@ const Container_board_background_img = styled.div`
         filter: brightness(95%); 
         cursor : pointer;
     }
+
 `;
 const Container_board_item_info = styled.div`
     // background : blue;
@@ -210,11 +206,7 @@ const Container_board_profile = styled.div`
     height : 80px;
     width : 100%;  
 `;
-const Container_board_profile_img = styled.div`
-    // background : red;
-    width : 140px;
-    height : 100%;
-`;
+
 const Container_board_profile_frame = styled.div`
     // background : aqua;
     height : 100%;

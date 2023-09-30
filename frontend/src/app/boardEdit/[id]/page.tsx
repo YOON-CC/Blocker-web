@@ -180,7 +180,7 @@ const Postedit = () => {
         <div>
             <Header />
             <Container>
-                <Container_tip>EDIT</Container_tip>
+                <Container_tip>✏️계시글을 다시 수정해보세요!</Container_tip>
                 <Container_title placeholder={postObject_title} onChange={handletitleChange}></Container_title>
                 <Container_default_img>
                     {postObject_images_idx.map((id, index) => (
@@ -199,8 +199,8 @@ const Postedit = () => {
                     <Container_img_select_btn type="file" accept="image/png" multiple onChange={handleImageChange} id="upload"></Container_img_select_btn>
                 </Container_img_select>
                 <Container_info_container>
-                    <Container_info_container_select_location></Container_info_container_select_location>
-                    <Container_info_container_select_contract></Container_info_container_select_contract>
+                    <Container_info_container_select_location>위치검색</Container_info_container_select_location>
+                    <Container_info_container_select_contract>미체결 계약서 선택</Container_info_container_select_contract>
                 </Container_info_container>
                 <Container_content placeholder={postObject_content} onChange={handlecontentChange}></Container_content>
                 <form onSubmit={handleBoardEdit}>
@@ -227,7 +227,7 @@ const Container = styled.div`
     transform : translate(-50%, -50%);
 `;
 const Container_tip = styled.div`
-    background : black;
+    background : #435DF1;
     height: 40px;
     width: 100%;
 
@@ -238,6 +238,7 @@ const Container_tip = styled.div`
     font-size : 12px;
     font-weight : bold;
     color : white;
+    border-radius : 4px;
 `;
 const Container_title = styled.input`
     height: 40px;
@@ -333,7 +334,7 @@ const Container_img_select_btn = styled.input`
     border: 0;
 `;
 const Container_info_container = styled.div`
-    background : aqua;
+    background: linear-gradient(to right, #a3a3a3, #c9c9c9);
     height:40px;
     width: 100%;
 
@@ -349,16 +350,35 @@ const Container_info_container = styled.div`
 
     display : flex;
     justify-content : space-between;
+
+    border-radius : 3px;
+
 `;
 const Container_info_container_select_location = styled.div`
-    background : red;
     height:100%;
-    width: 295px;
+    width: 300px;
+
+    display : flex;
+    justify-content:center;
+    align-items: center;
+
+    &:hover {
+        background-color : rgba(0, 0, 0, 0.1);
+        cursor : pointer;
+    }
 `;
 const Container_info_container_select_contract = styled.div`
-    background : red;
     height:100%;
-    width: 295px;
+    width: 300px;
+
+    display : flex;
+    justify-content:center;
+    align-items: center;
+
+    &:hover {
+        background-color : rgba(0, 0, 0, 0.1);
+        cursor : pointer;
+    }
 `;
 const Container_content = styled.textarea`
     height: 150px;
@@ -418,7 +438,7 @@ const Container_btn_container_b1 = styled.div`
     cursor:pointer;
 `;
 const Container_btn_container_b2 = styled.button`
-    background : black;
+    background : #435DF1;
     height:100%;
     width: 75px;
 

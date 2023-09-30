@@ -8,7 +8,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBookmark, faEye, faCheck, faComment, faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from "next/link";
-
+import Banner from '@/components/Banner';
 const Post = () => {
 
     library.add(faBookmark);
@@ -185,18 +185,18 @@ const Post = () => {
                     </ModalContainer>
                 )}
                 <Container_1_c1>
-                {postObject_representImage ? (<img src={postObject_representImage} alt="이미지" style={{ width: '400px', height: '400px'}}/>
-                ) : (<img src="../image/no_img.png" alt="대체 이미지" style={{ width: '400px', height: '400px' }}/>)}
+                {postObject_representImage ? (<img src={postObject_representImage} alt="이미지" style={{ width: '530px', height: '330px'}}/>
+                ) : (<img src="../image/no_img.png" alt="대체 이미지" style={{ width: '530px', height: '330px' }}/>)}
                 </Container_1_c1>
                 <Container_1_c2>
                     <Container_1_c2_title>{postObject_title}</Container_1_c2_title>
                     <Container_1_c2_info>
                         <Container_1_c2_info_1>
-                            <FontAwesomeIcon icon="eye" style={{ color: '#b6b6b6', fontSize : "20px", marginRight : "5px", marginTop : "1px"}} />  
+                            <FontAwesomeIcon icon="eye" style={{ color: '#b6b6b6', fontSize : "16px", marginRight : "5px", marginTop : "1px"}} />  
                             {postObject_view}
                         </Container_1_c2_info_1>
                         <Container_1_c2_info_2>
-                            <FontAwesomeIcon icon="bookmark" style={{ color: '#b6b6b6', fontSize : "20px", marginRight : "5px"}}/>
+                            <FontAwesomeIcon icon="bookmark" style={{ color: '#b6b6b6', fontSize : "15px", marginRight : "5px"}}/>
                             {postObject_bookmarkCount}
                         </Container_1_c2_info_2>
                         <Container_1_c2_info_3>
@@ -217,7 +217,7 @@ const Post = () => {
                         </Container_1_c2_detail_2>
                         <Container_1_c2_detail_3>
                             <Container_1_c2_detail_3_text3>• 서명</Container_1_c2_detail_3_text3>
-                            <FontAwesomeIcon icon="check" style={{ color: '#00ff6a', fontSize : "20px", marginRight : "5px", marginLeft : "2px"}}></FontAwesomeIcon>
+                            <FontAwesomeIcon icon="check" style={{ color: '#00ff6a', fontSize : "14px", marginRight : "5px", marginLeft : "2px"}}></FontAwesomeIcon>
                         </Container_1_c2_detail_3>
                     </Container_1_c2_detail>
                     <Container_1_c2_btn>
@@ -232,6 +232,10 @@ const Post = () => {
                         <Container_1_c2_btn_3><FontAwesomeIcon icon="bullhorn" style={{ color: '#ffffff', fontSize : "20px", marginRight : "5px"}} />신고하기</Container_1_c2_btn_3>
                     </form>  
                     </Container_1_c2_btn>
+                    <Container_1_c2_content>
+                        {postObject_content}
+                    </Container_1_c2_content>
+
                 </Container_1_c2>
             </Container_1>
             <Container_2>
@@ -243,12 +247,6 @@ const Post = () => {
                     ))}
                 </Container_2_img_container>
             </Container_2>
-            <Container_3>
-                <Container_3_content_container>
-                    <Container_3_content_container_title>작성 내용</Container_3_content_container_title>
-                    <Container_3_content_container_content>{postObject_content}</Container_3_content_container_content>
-                </Container_3_content_container>
-            </Container_3>
         </div>
     );
 };
@@ -257,10 +255,9 @@ const Edit_container = styled.div`
     // background : red;
     height : 20px;
     width: 1000px;
-
+    top : 25%;
     left : 50%;
-    transform : translate(-50%);
-    margin-top: 90px;
+    transform : translate(-50%, -140%);
     display : flex;
     justify-content : end;
 
@@ -312,9 +309,9 @@ const Edit_container_b2 = styled.button`
 const Container_1 = styled.div`
     position : absolute;
     // background : red;
-    height : 400px;
+    height : 330px;
     width: 1000px;
-    margin-top : 120px;
+    top : 25%;
     left : 50%;
     transform : translate(-50%);
 
@@ -326,7 +323,7 @@ const Container_1 = styled.div`
 const Container_1_c1 = styled.div`
     // background : red;
     height : 100%;
-    width: 400px;
+    width: 530px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -336,83 +333,79 @@ const Container_1_c1 = styled.div`
 const Container_1_c2 = styled.div`
     // background : blue;
     height : 100%;
-    width: 580px;
+    width: 450px;
 `;
 const Container_1_c2_title = styled.div`
     // background : aqua;
-    height : 160px;
+    height : fit-content;
     width: 100%;
 
     display : flex;
     align-items : center;
 
-    font-size : 25px;
+    font-size : 20px;
     font-weight : bold;
 
     border-bottom : 2px solid #e8edf1;
+    padding-bottom : 10px;
 `;
 const Container_1_c2_info = styled.div`
     // background : aqua;
-    height : 25px;
+    height : 15px;
     width: 100%;
 
     display : flex;
 
     font-size : 20px;
-    font-weight : bold;
     margin-top:10px;
 `;
 const Container_1_c2_info_1 = styled.div`
     // background : red;
-    height : 25px;
+    height : 15px;
     width: fit-content;
 
     display : flex;
 
-    font-size : 15px;
-    font-weight : bold;
+    font-size : 14px;
     color : #b6b6b6;
 `;
 const Container_1_c2_info_2 = styled.div`
     // background : red;
-    height : 25px;
+    height : 15px;
     width: fit-content;
 
     display : flex;
 
-    font-size : 15px;
-    font-weight : bold;
+    font-size : 14px;
     color : #b6b6b6;
 
     margin-left : 15px;
 `;
 const Container_1_c2_info_3 = styled.div`
     // background : red;
-    height : 24px;
+    height : 15px;
     width: fit-content;
 
     display : flex;
 
-    font-size : 13px;
+    font-size : 12px;
     font-weight : bold;
     color : #b6b6b6;
 
     margin-left : 15px;
-    margin-top : 1px;
 `;
 const Container_1_c2_info_4 = styled.div`
     // background : red;
-    height : 24px;
+    height : 15px;
     width: fit-content;
 
     display : flex;
 
-    font-size : 13px;
+    font-size : 12px;
     font-weight : bold;
     color : #b6b6b6;
 
     margin-left : 5px;
-    margin-top : 1px;
 `;
 const Container_1_c2_detail = styled.div`
     // background : aqua;
@@ -421,17 +414,17 @@ const Container_1_c2_detail = styled.div`
 
     font-size : 20px;
     font-weight : bold;
-    margin-top: 25px;
+    margin-top: 12px;
 `;
 const Container_1_c2_detail_1 = styled.div`
     // background : red;
-    height : 25px;
+    height : 20px;
     width: fit-content;
 
     display : flex;
     align-items:center;
 
-    font-size : 15px;
+    font-size : 12px;
     font-weight : bold;
 `;
 const Container_1_c2_detail_1_text1 = styled.div`
@@ -441,19 +434,19 @@ const Container_1_c2_detail_1_text1 = styled.div`
 
     display : flex;
     align-items : center;
-    font-size : 13px;
+    font-size : 10px;
     font-weight : bold;
     color : #b6b6b6;
 `;
 const Container_1_c2_detail_2 = styled.div`
     // background : red;
-    height : 25px;
+    height : 20px;
     width: fit-content;
 
     display : flex;
     align-items:center;
 
-    font-size : 15px;
+    font-size : 12px;
     font-weight : bold;
     margin-top : 5px;
 `;
@@ -464,19 +457,19 @@ const Container_1_c2_detail_2_text2 = styled.div`
 
     display : flex;
     align-items : center;
-    font-size : 13px;
+    font-size : 10px;
     font-weight : bold;
     color : #b6b6b6;
 `;
 const Container_1_c2_detail_3 = styled.div`
     // background : red;
-    height : 25px;
+    height : 20px;
     width: fit-content;
 
     display : flex;
     align-items:center;
 
-    font-size : 15px;
+    font-size : 12px;
     font-weight : bold;
     margin-top : 5px;
 `;
@@ -487,14 +480,14 @@ const Container_1_c2_detail_3_text3 = styled.div`
 
     display : flex;
     align-items : center;
-    font-size : 13px;
+    font-size : 10px;
     font-weight : bold;
     color : #b6b6b6;
 `;
 const Container_1_c2_btn = styled.div`
-    // background : blue;
-    height : 65px;
-    width : 580px;
+    background: linear-gradient(to right, #1938ff, #5f92ff);
+    height : 45px;
+    width : 450px;
 
     display : flex;
     justify-content : space-between;
@@ -502,91 +495,112 @@ const Container_1_c2_btn = styled.div`
     font-weight : bold;
     color : #b6b6b6;
     margin-top : 15px;
+    border-radius : 5px;
 `;
 const Container_1_c2_btn_1_false = styled.button`
-    background : #d7d7d7;
+    // background : #d7d7d7;
+    background  : none;
+
     height : 100%;
-    width : 180px;
+    width : 150px;
 
     display : flex;
     justify-content : center;
     align-items : center;
 
-    font-size : 17px;
+    font-size : 14px;
     font-weight : bold;
     color : white;
 
     border : none;
-    border-radius : 5px;
     outline : none;
-
     cursor : pointer;
+
+    &:hover {
+        background-color : rgba(0, 0, 0, 0.1);
+    }
 `;
 const Container_1_c2_btn_1_true = styled.button`
-    background : #e5ff00;
+    // background : #e5ff00;
+    background  : none;
+
     height : 100%;
-    width : 180px;
+    width : 150px;
 
     display : flex;
     justify-content : center;
     align-items : center;
 
-    font-size : 17px;
+    font-size : 14px;
     font-weight : bold;
     color : #00ff6a;
 
     border : none;
-    border-radius : 5px;
     outline : none;
 
     cursor : pointer;
+
+    &:hover {
+        background-color : rgba(0, 0, 0, 0.1);
+    }
 
 `;
 const Container_1_c2_btn_2 = styled.button`
-    background : #435DF1;
+    // background : #435DF1;
+    background  : none;
+
     height : 100%;
-    width : 180px;
+    width : 150px;
 
     display : flex;
     justify-content : center;
     align-items : center;
 
-    font-size : 17px;
+    font-size : 14px;
     font-weight : bold;
     color : white;
 
     border : none;
-    border-radius : 5px;
     outline : none;
 
     cursor : pointer;
+    &:hover {
+        background-color : rgba(0, 0, 0, 0.1);
+    }
 
 `;
 const Container_1_c2_btn_3 = styled.button`
-    background : #ff002b;
+    // background : #ff002b;
+    background  : none;
     height : 100%;
-    width : 180px;
+    width : 150px;
 
     display : flex;
     justify-content : center;
     align-items : center;
 
-    font-size : 17px;
+    font-size : 14px;
     font-weight : bold;
     color : white;
 
     border : none;
-    border-radius : 5px;
     outline : none;
 
     cursor : pointer;
+
+    &:hover {
+        background-color : rgba(0, 0, 0, 0.1);
+    }
 `;
 const Container_2 = styled.div`
     position : absolute;
     // background : blue;
     height : 50px;
-    width : 100%;
-    margin-top : 530px;
+    width : 530px;
+
+    top : 25%;
+    left : 50%;
+    transform : translate(-93.7%, 680%);
 
 
     display : flex;
@@ -598,54 +612,24 @@ const Container_2_img_container = styled.div`
     position : absolute;
     // background : #e8edf1;
     height : 100%;
-    width : 1028px;
+    width : 565px;
     display : flex;
 
     left : 50%;
     transform : translate(-50%);
 
 `;
-const Container_3 = styled.div`
-    position : absolute;
-    // background : red;
-    height : 200px;
-    width : 100%;
-    margin-top : 600px;
-
-
-    display : flex;
-    justify-content : space-between;
-
-    // border : 1px solid #000000;
-`;
-const Container_3_content_container = styled.div`
-    position : relative;
-    // background : aqua;
-    height : 100%;
-    width : 1000px;
-
-    left : 50%;
-    transform : translate(-50%);
-`;
-const Container_3_content_container_title = styled.div`
-    // background : green;
-    height : 45px;
-    width : 100%;
-
-    font-size : 25px;
-    font-weight : bold;
-    color : #b6b6b6;
-
-    border-bottom : 1px solid #b6b6b6;
-`;
-const Container_3_content_container_content = styled.div`
-    // background : red;
+const Container_1_c2_content = styled.div`
+    background : #f1f1f1;
     height : fit-content;
-    width : 100%;
+    width : 440px;
+    border-radius : 5px;
 
-    font-size : 15px;
+    color : grey;
+    font-size : 12px;
     font-weight : bold;
     margin-top : 10px;
+    padding:5px;
 `;
 
 const ModalContainer = styled.div`
@@ -663,6 +647,6 @@ const ModalContainer = styled.div`
 
 const ModalImage = styled.img`
     max-width: fit-content;
-    max-height: 350px;
+    max-height: 330px;
 `;
 export default Post;
