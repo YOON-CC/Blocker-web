@@ -166,6 +166,7 @@ const Post = () => {
     return (
         <div>
             <Header/>
+            <AllContainer>
             {postObject_isWriter === true && 
                 <Edit_container>
                     <Edit_container_btn_container>
@@ -185,8 +186,8 @@ const Post = () => {
                     </ModalContainer>
                 )}
                 <Container_1_c1>
-                {postObject_representImage ? (<img src={postObject_representImage} alt="이미지" style={{ width: '530px', height: '330px'}}/>
-                ) : (<img src="../image/no_img.png" alt="대체 이미지" style={{ width: '530px', height: '330px' }}/>)}
+                {postObject_representImage ? (<img src={postObject_representImage} alt="이미지" style={{ width: '530px', height: '330px', borderRadius : '5px'}}/>
+                ) : (<img src="../image/no_img.png" alt="대체 이미지" style={{ width: '530px', height: '330px' , borderRadius : '5px'}}/>)}
                 </Container_1_c1>
                 <Container_1_c2>
                     <Container_1_c2_title>{postObject_title}</Container_1_c2_title>
@@ -242,24 +243,42 @@ const Post = () => {
                 <Container_2_img_container>
                     {postObject_images_idx.map((id, index) => (
                         <div key={id} onClick={() => handleImageClick(index)}>
-                            <img src={postObject_images_addr[index]} alt="이미지" style={{ width: '50px', height: '50px', marginLeft: '15px', cursor : 'pointer'}}/>
+                            <img src={postObject_images_addr[index]} alt="이미지" style={{ width: '50px', height: '50px', marginLeft: '15px', cursor : 'pointer' , borderRadius : '5px'}}/>
                         </div>
                     ))}
                 </Container_2_img_container>
             </Container_2>
+            </AllContainer>
+            <Footor>
+                <img src='../image/footer_img.png' alt="이미지" style={{ width: '100%', height: '100%'}}/>
+            </Footor>
         </div>
     );
 };
+const AllContainer = styled.div`
+    position : absolute;
+    width : 1000px;
+    height : 400px;
+    background : white;
+    padding : 20px;
+    top : 50%;
+    left : 50%;
+    transform : translate(-50%, -50%);
+    display : flex;
+    justify-content : end;
+    border-radius : 8px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+
+    // border : 1px solid #000000;
+`;
 const Edit_container = styled.div`
     position : absolute;
     // background : red;
     height : 20px;
     width: 1000px;
-    top : 25%;
-    left : 50%;
-    transform : translate(-50%, -140%);
     display : flex;
     justify-content : end;
+    margin-top : -10px
 
     // border : 1px solid #000000;
 `;
@@ -311,9 +330,7 @@ const Container_1 = styled.div`
     // background : red;
     height : 330px;
     width: 1000px;
-    top : 25%;
-    left : 50%;
-    transform : translate(-50%);
+    margin-top : 25px;
 
     display : flex;
     justify-content : space-between;
@@ -327,7 +344,6 @@ const Container_1_c1 = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    border : 1px solid #e8edf1;
 
 `;
 const Container_1_c2 = styled.div`
@@ -596,11 +612,12 @@ const Container_2 = styled.div`
     position : absolute;
     // background : blue;
     height : 50px;
-    width : 530px;
+    width : 533px;
 
-    top : 25%;
     left : 50%;
-    transform : translate(-93.7%, 680%);
+    transform : translate(-93.7%);
+
+    margin-top : 363px;
 
 
     display : flex;
@@ -648,5 +665,14 @@ const ModalContainer = styled.div`
 const ModalImage = styled.img`
     max-width: fit-content;
     max-height: 330px;
+`;
+const Footor = styled.div`
+    position: fixed;
+    width : 100%;
+    background: linear-gradient(to right, #1938ff, #5f92ff);
+    height : 40%;
+    bottom: 0;
+    left: 0;
+    z-index : -1;
 `;
 export default Post;

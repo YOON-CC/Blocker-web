@@ -136,7 +136,7 @@ const Container = styled.div`
     height: 500px;
     width: 600px;
 
-    top : 50%;
+    top : 55%;
     left : 50%;
     transform : translate(-50%, -50%);
 `;

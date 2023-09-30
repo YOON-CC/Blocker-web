@@ -25,16 +25,6 @@ const Contracts = () => {
     const [contractData_2, setContractData_2] = useState<ContractItem[]>([]); 
 
 
-    const [currentTime, setCurrentTime] = useState(new Date());
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentTime(new Date());
-        }, 1000); // 1초마다 업데이트
-
-        return () => clearInterval(interval); // 컴포넌트 언마운트 시 interval 해제
-    }, []);
-
     //미체결 게약서 받아오기
     const handleContarctList_1 = async () => {
 
@@ -93,18 +83,22 @@ const Contracts = () => {
     return (
         <div>
             <Header />
-            <Container_1>
-                <Container_1_clock>{currentTime.toLocaleTimeString()}</Container_1_clock>
-            </Container_1>
+            <Banner_img src="../image/contract_banner_img.png" alt="대체 이미지"/>
+            <Container_3_contract_write>
+                {/* <StyledLink to="/contractwrite" style={{ textDecoration: 'none' }}> */}
+                <Link href="/contractWrite" style={{ textDecoration: 'none' }}>
+                    <Container_3_contract_write_btn>계약서 작성</Container_3_contract_write_btn>
+                </Link>
+                {/* </StyledLink>     */}
+            </Container_3_contract_write>
             <Container_2>
                 <Container_2_contract>
                     {/* <StyledLink to={`/contracts/${boardId}`} style={{ textDecoration: 'none' }}> */}
                         <Container_2_contract_1>
                             <Container_2_contract_title_Container>
-                                <img src="./image/login_logo.png" style={{ width: "60px", height: "60px", marginLeft:"10px", marginTop:"10px"}}></img>
+                                <img src="./image/login_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
                                 <Container_2_contract_title_Container_content>
                                     <Container_2_contract_title_Container_content_1>미체결 계약서</Container_2_contract_title_Container_content_1>
-                                    <Container_2_contract_title_Container_content_2>작성만 되어져있는 계약서</Container_2_contract_title_Container_content_2>
                                 </Container_2_contract_title_Container_content>
                             </Container_2_contract_title_Container>
                             <Container_2_contract_line></Container_2_contract_line>
@@ -129,10 +123,9 @@ const Contracts = () => {
                         </Container_2_contract_1>
                     <Container_2_contract_2> 
                         <Container_2_contract_title_Container>
-                            <img src="./image/login_logo.png" style={{ width: "60px", height: "60px", marginLeft:"10px", marginTop:"10px"}}></img>
+                            <img src="./image/login_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
                             <Container_2_contract_title_Container_content>
                                 <Container_2_contract_title_Container_content_1>진행중 계약서</Container_2_contract_title_Container_content_1>
-                                <Container_2_contract_title_Container_content_2>진행중인 계약서</Container_2_contract_title_Container_content_2>
                             </Container_2_contract_title_Container_content>
                         </Container_2_contract_title_Container>
                         <Container_2_contract_line></Container_2_contract_line>
@@ -157,53 +150,36 @@ const Contracts = () => {
                     </Container_2_contract_2>
                     <Container_2_contract_3>
                         <Container_2_contract_title_Container>
-                            <img src="./image/login_logo.png" style={{ width: "60px", height: "60px", marginLeft:"10px", marginTop:"10px"}}></img>
+                            <img src="./image/login_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
                             <Container_2_contract_title_Container_content>
                                 <Container_2_contract_title_Container_content_1>체결 계약서</Container_2_contract_title_Container_content_1>
-                                <Container_2_contract_title_Container_content_2>계약이 완료된 계약서</Container_2_contract_title_Container_content_2>
                             </Container_2_contract_title_Container_content>
                         </Container_2_contract_title_Container> 
                         <Container_2_contract_line></Container_2_contract_line>
                     </Container_2_contract_3>
                 </Container_2_contract>
             </Container_2>
-            <Container_3_contract_write>
-                {/* <StyledLink to="/contractwrite" style={{ textDecoration: 'none' }}> */}
-                <Link href="/contractWrite" style={{ textDecoration: 'none' }}>
-                    <Container_3_contract_write_btn>계약서 작성</Container_3_contract_write_btn>
-                </Link>
-                {/* </StyledLink>     */}
-            </Container_3_contract_write>
+
         </div>
     );
 };
 
-const Container_1 = styled.div`
-    // position : absolute;
-    // background : red;
-    height: 140px;
-    width: 100%;
-`;
-const Container_1_clock = styled.div`
-    // position : absolute;
-    // background : aqua;
-    height: 80px;
-    width: 100%;
+const Banner_img = styled.img`
+    position  : relative;
+    width : 1300px;
+    height : 330px;
+    margin-top : 100px;
+    left : 50%;
+    transform : translate(50%);
+    margin-left : -1300px;
+    border-radius : 5px;
 
-    display : flex;
-    align-items: center;
-    justify-content : center;
-
-    color : #5a5a5a;
-    font-size : 25px;
-    font-weight:bold;
-    padding-top : 75px;
 `;
 
 const Container_2 = styled.div`
     // position : absolute;
-    // background : blue;
-    height: 500px;
+    background : blue;
+    // height: 280px;
     width: 100%;
 
     margin-top : 10px;
@@ -212,7 +188,7 @@ const Container_2 = styled.div`
 const Container_2_contract = styled.div`
     position : absolute;
     // background : green;
-    height: 500px;
+    height: 280px;
     width: 1300px;
 
 
@@ -245,7 +221,7 @@ const Container_2_contract_3 = styled.div`
 `;
 const Container_2_contract_title_Container = styled.div`
     // background : green;
-    height: 80px;
+    height: 50px;
     width: 100%;
     display : flex;
 `;
@@ -253,29 +229,16 @@ const Container_2_contract_title_Container_content = styled.div`
     // background : red;
     height: 100%;
     width: 200px;
-    margin-left : 30px;
+    margin-left : 60px;
 `;
 const Container_2_contract_title_Container_content_1 = styled.div`
     // background : aqua;
-    height: 30px;
+    height: fit-content;
     width: 100%;
     margin-top : 10px;
 
     font-size : 20px;
     font-weight : bold;
-    display : flex;
-    justify-content : center;
-    align-items: center;
-`;
-const Container_2_contract_title_Container_content_2 = styled.div`
-    // background : blue;
-    height: 25px;
-    width: 100%;
-
-    font-size : 13px;
-    // font-weight : bold;
-    color : #9c9c9c;
-
     display : flex;
     justify-content : center;
     align-items: center;
@@ -289,7 +252,7 @@ const Container_2_contract_line = styled.div`
 const Container_2_contarcts_container = styled.div`
     position : absolute;
     // background : green;
-    height: 410px;
+    height: 220px;
     width: 380px;
     margin-left : 10px;
     overflow : auto;
@@ -314,10 +277,12 @@ const Container_2_contarcts_container = styled.div`
     &::-webkit-scrollbar-track {
         background: transparent;
     }
+
+
 `;
 const Container_2_contarcts_1 = styled.div`
     position : relative;
-    background : #ededed;
+    background : #efefef;
     height: 100px;
     width: 100%;
     margin-top : 10px;
@@ -326,6 +291,8 @@ const Container_2_contarcts_1 = styled.div`
     &:hover {
         filter: brightness(90%); 
     }
+    color : black;
+
 `;
 const Container_2_contarcts_1_title = styled.div`
     
@@ -371,23 +338,25 @@ const Container_2_contarcts_1_info_content = styled.div`
     font-size : 12px;
 `;
 const Container_3_contract_write = styled.div`
-    // position : absolute;
+    position : absolute;
     // background : yellow;
     height: 40px;
     width: 100%;
-    margin-top : 25px;
+    margin-top : -70px;
+    z-index : 1;
 `;
 const Container_3_contract_write_btn = styled.div`
     position : relative;
-    background : black;
+    background : #ffffff;
     height: 100%;
-    width: 140px;
+    width: 160px;
 
     border:none;
     cursor : pointer;
 
-    font-size : 13px;
-    color : #ffffff;
+    font-size : 15px;
+    font-weight: bold;
+    color : #435DF1;
 
     left : 50%;
     transform : translate(-50%);
