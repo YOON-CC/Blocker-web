@@ -9,6 +9,8 @@ import { faBookmark, faEye, faCheck, faComment, faBullhorn } from '@fortawesome/
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from "next/link";
 import Banner from '@/components/Banner';
+
+
 const Post = () => {
 
     library.add(faBookmark);
@@ -69,7 +71,9 @@ const Post = () => {
                 setPostObject_isWriter(response.data.isWriter);
                 setPostObject_isBookmark(response.data.isBookmark);
             }
-
+            if (response.status === 403){
+                
+            }
         } catch (error) {
 
         }
@@ -261,7 +265,7 @@ const AllContainer = styled.div`
     height : 400px;
     background : white;
     padding : 20px;
-    top : 50%;
+    top : 48%;
     left : 50%;
     transform : translate(-50%, -50%);
     display : flex;
@@ -501,7 +505,7 @@ const Container_1_c2_detail_3_text3 = styled.div`
     color : #b6b6b6;
 `;
 const Container_1_c2_btn = styled.div`
-    background: linear-gradient(to right, #1938ff, #5f92ff);
+    background: linear-gradient(to right, #4324dc, #7197ff);
     height : 45px;
     width : 450px;
 

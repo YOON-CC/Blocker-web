@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import Banner from '@/components/Banner';
 import axios from 'axios';
 import Link from "next/link";
+import Login from '../Login';
 
 
 interface BoardItem {
@@ -34,14 +35,11 @@ function getRandomImageUrl() {
 const Board = () => {
     const [boardData, setBoardData] = useState<BoardItem[]>([]); 
 
-
-
-
     const access_token = localStorage.getItem('access-token');
     console.log(access_token)
 
     const handleBoardList = async () => {
-
+        
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/boards`, {
                 params: {
@@ -52,13 +50,11 @@ const Board = () => {
                     'Authorization': access_token,
                 }
             });
-
             console.log(response.data)
             if (response.status === 200) {
                 console.log("옴")
                 setBoardData(response.data);
             }
-
         } catch (error) {
 
         }
@@ -76,7 +72,6 @@ const Board = () => {
         <div>
             <Container>
                 <Header></Header>
- 
                 <Banner></Banner>
                 <Board_title>Board list</Board_title>
                 <Container_board_frame>
