@@ -99,7 +99,7 @@ const Board = () => {
                                             </Container_board_profile_user_info3>
                                     </Container_board_profile_user_info1>
                                     <Container_board_title_frame>
-                                        {item.title.length > 8 ? `${item.title.substring(0, )}...` : item.title}
+                                        {item.title.length > 8 ? `${item.title.substring(0, 8)}...` : item.title}
                                     </Container_board_title_frame>
                                     <Container_board_content_frame>
                                         {item.content.length > 50 ? `${item.content.substring(0, 50)}...` : item.content}
