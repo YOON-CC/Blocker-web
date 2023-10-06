@@ -106,7 +106,7 @@ const Contracts = () => {
                             <Container_2_contarcts_container>
                                 {contractData_1.map((item, index) => (
                                     <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
-                                        {localStorage.setItem("contractId_1", item.contractId.toString());
+                                        {localStorage.setItem("contractId", item.contractId.toString());
                                         localStorage.setItem("state", "NOT_PROCEED");}} key={index}>
                                         <Container_2_contarcts_1>
                                             <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
@@ -133,7 +133,7 @@ const Contracts = () => {
                         <Container_2_contarcts_container>
                             {contractData_2.map((item, index) => (
                                 <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
-                                    {localStorage.setItem("contractId_2", item.contractId.toString());
+                                    {localStorage.setItem("contractId", item.contractId.toString());
                                     localStorage.setItem("state", "PROCEED");}} key={index}>
                                     <Container_2_contarcts_1>
                                         <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>

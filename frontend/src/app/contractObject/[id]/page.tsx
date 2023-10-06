@@ -13,7 +13,7 @@ import Link from "next/link";
 const Contracts_object = () => {
 
     const access_token = localStorage.getItem('access-token');
-    const contractId = localStorage.getItem('contractId_1');
+    const contractId = localStorage.getItem('contractId');
     const contractType = localStorage.getItem('state');
 
     const [contractObject_contractId, setContractObject_contractId] = useState(0); 
@@ -77,19 +77,19 @@ const Contracts_object = () => {
             console.log(response.data)
 
             if (response.status === 200) {
-                setContractObject_contractId(response.data.contractId);
-                setContractObject_title(response.data.title);
-                setContractObject_content(response.data.content);
-                setContractObject_createdAt(response.data.createdAt);
-                setContractObject_modifiedAt(response.data.modifiedAt);
-                //여기에 참여여부
+                // setContractObject_contractId(response.data.contractId);
+                // setContractObject_title(response.data.title);
+                // setContractObject_content(response.data.content);
+                // setContractObject_createdAt(response.data.createdAt);
+                // setContractObject_modifiedAt(response.data.modifiedAt);
+                // //여기에 참여여부
             }
 
         } catch (error) {
 
         }
     };
-
+    console.log(contractType,"입니다.", contractId, "입니다.")
     useEffect(() => {
         if (contractType === 'NOT_PROCEED'){
             handleContarctObject_1();
@@ -234,7 +234,7 @@ const Contracts_object = () => {
             {contractType === 'NOT_PROCEED' && (
                 <Container_btn_container>
                     <Container_btn_container_b1>취소</Container_btn_container_b1>
-                    <Link href='/contractEdit' style={{ textDecoration: 'none' }} onClick={() => localStorage.setItem("contractId_1", contractObject_contractId.toString())}>
+                    <Link href='/contractEdit' style={{ textDecoration: 'none' }} onClick={() => localStorage.setItem("contractId", contractObject_contractId.toString())}>
                         <Container_btn_container_b2>편집</Container_btn_container_b2>
                     </Link>
                     <form onSubmit={handleContractDelete}>
