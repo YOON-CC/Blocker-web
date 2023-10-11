@@ -10,6 +10,10 @@ import axios from 'axios';
 import Link from "next/link";
 import Swal from 'sweetalert2';
 
+interface Paticipation {
+    contractor: string;
+    signState: string;
+}
 
 const Contracts_object = () => {
 
@@ -22,7 +26,7 @@ const Contracts_object = () => {
     const [contractObject_content, setContractObject_content] = useState(''); 
     const [contractObject_createdAt, setContractObject_createdAt] = useState(''); 
     const [contractObject_modifiedAt, setContractObject_modifiedAt] = useState(''); 
-    const [contractObject_participation, sestContractObject_participation] = useState([]); 
+    const [contractObject_participation, setContractObject_participation] = useState<Paticipation[]>([])
 
 
     //계약참여자 찾기 모달 상태
@@ -83,7 +87,7 @@ const Contracts_object = () => {
                 setContractObject_content(response.data.content);
                 setContractObject_createdAt(response.data.createdAt);
                 setContractObject_modifiedAt(response.data.modifiedAt);
-                // //여기에 참여여부
+                setContractObject_participation(response.data.contractorAndSignStates);
             }
 
         } catch (error) {
@@ -317,6 +321,18 @@ const Contracts_object = () => {
                     <form onSubmit={handleContractDestruction}>
                         <Container_btn_container_b3>삭제</Container_btn_container_b3>
                     </form>
+                    <Container_participation_list>
+                    {contractObject_participation.map((item, index) => (
+                        <Container_participation_list_container key={index}>
+                            <Container_participation_list_container_name style={{ background: item.signState === 'Y' ? 'lime' : '#f1f1f1' }}>
+                                {item.contractor}
+                             </Container_participation_list_container_name>
+                            <Container_participation_list_container_state style={{ background: item.signState === 'Y' ? 'lime' : '#f1f1f1' }}>
+                                {item.signState}
+                            </Container_participation_list_container_state>
+                        </Container_participation_list_container>
+                    ))}
+                    </Container_participation_list>
                     <form onSubmit={handleContractSign}>
                         <Container_btn_container_b5>전자서명 등록</Container_btn_container_b5>
                     </form>
@@ -550,6 +566,43 @@ const Container_btn_container_b3 = styled.button`
 
     cursor:pointer;
 `;
+const Container_participation_list = styled.div`
+    background : #f1f1f1;
+    height:100%;
+    width: fit-content;
+
+    display : flex;
+    justify-content : center;
+    align-items: center;
+
+    font-size : 12px;
+    font-weight : bold;
+    color : grey;
+
+    border : none;
+
+`;
+const Container_participation_list_container = styled.div`
+    height:100%;
+    width: 70px;
+
+`;
+const Container_participation_list_container_name = styled.div`
+    height:50%;
+    width: 100%;
+    display : flex;
+    justify-content : center;
+    align-items: center;
+    border : none;
+`;
+const Container_participation_list_container_state = styled.div`
+    height:50%;
+    width: 100%;
+    display : flex;
+    justify-content : center;
+    align-items: center;
+    border : none;
+`;
 const Container_btn_container_b4 = styled.button`
     background : #435DF1;
     height:100%;
@@ -571,7 +624,7 @@ const Container_btn_container_b4 = styled.button`
 const Container_btn_container_b5 = styled.button`
     background : #d4c900;
     height:100%;
-    width: 515px;
+    width: 100px;
 
     display : flex;
     justify-content : center;
