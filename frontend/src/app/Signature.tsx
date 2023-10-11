@@ -36,7 +36,7 @@ const Signature = () => {
       const formData = new FormData();
       formData.append('signature', signatureImage, 'signature.png');
       console.log(typeof formData)
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/signatures`,
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/signatures`,
         formData,
         {
           headers: {

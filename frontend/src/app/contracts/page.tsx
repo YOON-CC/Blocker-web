@@ -23,6 +23,7 @@ const Contracts = () => {
     const access_token = localStorage.getItem('access-token');
     const [contractData_1, setContractData_1] = useState<ContractItem[]>([]); 
     const [contractData_2, setContractData_2] = useState<ContractItem[]>([]); 
+    const [contractData_3, setContractData_3] = useState<ContractItem[]>([]); 
 
 
     //미체결 게약서 받아오기
@@ -73,11 +74,35 @@ const Contracts = () => {
 
         }
     };
+
+    const handleContarctList_3 = async () => {
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts`, {
+                params: {
+                    state: "CONCLUDE",
+                },
+                headers: {
+                    'Authorization': access_token,
+                }
+            });
+
+            console.log(response.data)
+            if (response.status === 200) {
+                console.log("옴")
+                setContractData_3(response.data);
+            }
+
+        } catch (error) {
+
+        }
+    };
     
     useEffect(() => {
         // 페이지가 로드될 때 한 번만 호출되는 로직
         handleContarctList_1();
         handleContarctList_2();
+        handleContarctList_3();
     }, []);
 
     return (
@@ -156,6 +181,24 @@ const Contracts = () => {
                             </Container_2_contract_title_Container_content>
                         </Container_2_contract_title_Container> 
                         <Container_2_contract_line></Container_2_contract_line>
+
+                        <Container_2_contarcts_container>
+                            {contractData_3.map((item, index) => (
+                                <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
+                                    {localStorage.setItem("contractId", item.contractId.toString());
+                                    localStorage.setItem("state", "CONCLUDE");}} key={index}>
+                                    <Container_2_contarcts_1>
+                                        <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
+                                        <Container_2_contarcts_1_content>{item.content}</Container_2_contarcts_1_content>
+                                        <Container_2_contarcts_1_info>
+                                            <Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Container_2_contarcts_1_info_content>
+                                            <Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Container_2_contarcts_1_info_content>
+                                        </Container_2_contarcts_1_info>
+                                    </Container_2_contarcts_1>
+                                </Link>
+                            ))}
+                        </Container_2_contarcts_container>
+
                     </Container_2_contract_3>
                 </Container_2_contract>
             </Container_2>

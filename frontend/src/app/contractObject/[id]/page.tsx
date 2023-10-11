@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Header from '@/components/Header';
 import axios from 'axios';
 import Link from "next/link";
+import Swal from 'sweetalert2';
 
 
 const Contracts_object = () => {
@@ -77,6 +78,30 @@ const Contracts_object = () => {
             console.log(response.data)
 
             if (response.status === 200) {
+                setContractObject_contractId(response.data.contractId);
+                setContractObject_title(response.data.title);
+                setContractObject_content(response.data.content);
+                setContractObject_createdAt(response.data.createdAt);
+                setContractObject_modifiedAt(response.data.modifiedAt);
+                // //여기에 참여여부
+            }
+
+        } catch (error) {
+
+        }
+    };
+    const handleContarctObject_3 = async () => {
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/conclude/${contractId}`, {
+                headers: {
+                    'Authorization': access_token,
+                }
+            });
+
+            console.log(response.data)
+
+            if (response.status === 200) {
                 // setContractObject_contractId(response.data.contractId);
                 // setContractObject_title(response.data.title);
                 // setContractObject_content(response.data.content);
@@ -97,9 +122,30 @@ const Contracts_object = () => {
         else if (contractType === 'PROCEED'){
             handleContarctObject_2();
         }
+        else if (contractType === 'CONCLUDE'){
+            handleContarctObject_3();
+        }
 
     }, []);
 
+    //모든 계약서 관련 게시글 삭제
+    const handleContractDeleteAll = async () => {
+        try {
+            const response = await axios.delete(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/with-boards/${contractId}`, // 경로 변수 사용
+                {
+                    headers: {
+                        Authorization: access_token,
+                    },
+                }
+            );
+            //관련된 게시글이 없음
+            if (response.status === 200) {
+                console.log("삭제됨")
+            }//관련된 게시글이 존재
+        } catch (error) {
+
+        }
+    }
     //계약서 삭제
     const handleContractDelete = async (event : any) => {
         event.preventDefault();
@@ -111,11 +157,34 @@ const Contracts_object = () => {
                     },
                 }
             );
+            //관련된 게시글이 없음
             if (response.status === 200) {
                 console.log("삭제됨")
+            }//관련된 게시글이 존재
+            else if(response.status == 400){
+
             }
         } catch (error) {
-            // 에러 처리 코드 추가
+            Swal.fire({
+
+                text: '계약서와 관련된 게시글이 모두 삭제됩니다.',
+                icon: 'warning',
+                
+                showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+                confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+                cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+                confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+                cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+                
+                reverseButtons: true, // 버튼 순서 거꾸로
+                
+            }).then(result => {
+                // 만약 Promise리턴을 받으면,
+                if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+                
+                    handleContractDeleteAll()
+                }
+            });
         }
     }
 
