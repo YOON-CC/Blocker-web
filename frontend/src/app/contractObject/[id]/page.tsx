@@ -221,7 +221,7 @@ const Contracts_object = () => {
 
         }
     }
-
+ 
     //계약 진행하기 버튼
     const handleContractToProceed = async (event : any) => {
         event.preventDefault();
