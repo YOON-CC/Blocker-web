@@ -125,6 +125,7 @@ const Postwrite = () => {
                         <Container_btn_container_b2>작성</Container_btn_container_b2>
                     </Container_btn_container>
                 </form>
+    
             </Container>
         </div>
     );

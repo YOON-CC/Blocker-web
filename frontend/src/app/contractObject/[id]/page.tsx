@@ -226,7 +226,7 @@ const Contracts_object = () => {
     const handleContractToProceed = async (event : any) => {
         event.preventDefault();
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/signs`, {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/agreement-signs`, {
                 contractId: contractId,
                 contractors : searchUserContentEmail,
             }, {
@@ -247,7 +247,7 @@ const Contracts_object = () => {
     //전자서명 등록
     const handleContractSign = async (event : any) => {
         try {
-            const response = await axios.patch(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/signs/contract/${contractId}`, {
+            const response = await axios.patch(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/agreement-signs/contract/${contractId}`, {
 
             }, {
                 headers: {
@@ -269,7 +269,7 @@ const Contracts_object = () => {
     const handleContractDestruction = async (event : any) => {
         event.preventDefault();
         try {
-            const response = await axios.delete(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/signs/contract/${contractId}`, // 경로 변수 사용
+            const response = await axios.delete(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/agreement-signs/contract/${contractId}`, // 경로 변수 사용
                 {
                     headers: {
                         Authorization: access_token,

@@ -89,7 +89,7 @@ const Contracts = () => {
 
             console.log(response.data)
             if (response.status === 200) {
-                console.log("옴")
+                // console.log("체결", response.data)
                 setContractData_3(response.data);
             }
 
