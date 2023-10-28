@@ -91,9 +91,9 @@ const Header = () => {
                     <img src="../image/menu.png" style={{ width: "23px", height: "23px", marginLeft:"10px"}}></img>
                     {isDropdownOpen &&         
                     <DropdownContainer>
-                        {/* <StyledLink to="/mypage" style={{ textDecoration: 'none' }}> */}
+                        <Link href='/mypage' style={{ textDecoration: 'none' }}>
                             <DropdownItem>마이페이지</DropdownItem>
-                        {/* </StyledLink> */}
+                        </Link>
                         <DropdownItem onClick={handleLogoutClick}>로그아웃</DropdownItem>
                     </DropdownContainer>
                     }
