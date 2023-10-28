@@ -39,6 +39,7 @@ const Header = () => {
         <Container>
             {appStore.value === 2 && <Login></Login>}
             {appStore.value === 3 && <Signature></Signature>}
+
             {/* <StyledLink to="/" style={{ textDecoration: 'none' }}> */}
             <Link href="/" style={{ textDecoration: 'none' , color : 'black'}}>
                 <Container_title>
