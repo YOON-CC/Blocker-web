@@ -10,6 +10,7 @@ import Link from "next/link";
 import { observer } from 'mobx-react-lite';
 import Login from '@/app/Login';
 import Signature from '@/app/Signature';
+import SignatureEdit from '@/app/SignatureEdit';
 
 const Header = () => {
     // const navigate = useNavigate();
@@ -39,6 +40,7 @@ const Header = () => {
         <Container>
             {appStore.value === 2 && <Login></Login>}
             {appStore.value === 3 && <Signature></Signature>}
+            {appStore.value === 4 && <SignatureEdit></SignatureEdit>}
 
             {/* <StyledLink to="/" style={{ textDecoration: 'none' }}> */}
             <Link href="/" style={{ textDecoration: 'none' , color : 'black'}}>

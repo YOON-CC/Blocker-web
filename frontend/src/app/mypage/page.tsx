@@ -105,7 +105,7 @@ const Contracts_object = () => {
     }, []);
 
     const handleButtonClick = () => {
-        appStore.setValue(3);
+        appStore.setValue(4);
       };
     return (
         <div>
