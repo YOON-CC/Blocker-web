@@ -25,6 +25,9 @@ const Contracts = () => {
     const [contractData_2, setContractData_2] = useState<ContractItem[]>([]); 
     const [contractData_3, setContractData_3] = useState<ContractItem[]>([]); 
 
+    const [contractData_4, setContractData_4] = useState<ContractItem[]>([]); 
+    const [contractData_5, setContractData_5] = useState<ContractItem[]>([]); 
+
 
     //미체결 게약서 받아오기
     const handleContarctList_1 = async () => {
@@ -74,7 +77,7 @@ const Contracts = () => {
 
         }
     };
-
+    //체결 게약서 받아오기
     const handleContarctList_3 = async () => {
 
         try {
@@ -97,12 +100,59 @@ const Contracts = () => {
 
         }
     };
-    
+    //파기 진행중 게약서 받아오기
+    const handleContarctList_4 = async () => {
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-contracts`, {
+                params: {
+                    state: "CANCELING",
+                },
+                headers: {
+                    'Authorization': access_token,
+                }
+            });
+
+            console.log(response.data)
+            if (response.status === 200) {
+                console.log("파기 진행중", response.data)
+                setContractData_4(response.data);
+            }
+
+        } catch (error) {
+
+        }
+    };
+    //파기 체결 게약서 받아오기
+    const handleContarctList_5 = async () => {
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-contracts`, {
+                params: {
+                    state: "CANCELED",
+                },
+                headers: {
+                    'Authorization': access_token,
+                }
+            });
+
+            console.log(response.data)
+            if (response.status === 200) {
+                console.log("파기 진행중", response.data)
+                setContractData_4(response.data);
+            }
+
+        } catch (error) {
+
+        }
+    };
     useEffect(() => {
         // 페이지가 로드될 때 한 번만 호출되는 로직
         handleContarctList_1();
         handleContarctList_2();
         handleContarctList_3();
+        handleContarctList_4();
+        handleContarctList_5();
     }, []);
 
     return (
@@ -116,39 +166,42 @@ const Contracts = () => {
                 </Link>
                 {/* </StyledLink>     */}
             </Container_3_contract_write>
+            <Container_title_1>
+                <Container_title_1_name>🔗나의 계약 현황</Container_title_1_name>
+            </Container_title_1>
             <Container_2>
                 <Container_2_contract>
                     {/* <StyledLink to={`/contracts/${boardId}`} style={{ textDecoration: 'none' }}> */}
-                        <Container_2_contract_1>
-                            <Container_2_contract_title_Container>
-                                <img src="./image/login_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
-                                <Container_2_contract_title_Container_content>
-                                    <Container_2_contract_title_Container_content_1>미체결 계약서</Container_2_contract_title_Container_content_1>
-                                </Container_2_contract_title_Container_content>
-                            </Container_2_contract_title_Container>
-                            <Container_2_contract_line></Container_2_contract_line>
+                    <Container_2_contract_1>
+                        <Container_2_contract_title_Container>
+                            <img src="./image/contracts_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
+                            <Container_2_contract_title_Container_content>
+                                <Container_2_contract_title_Container_content_1>미체결 계약서</Container_2_contract_title_Container_content_1>
+                            </Container_2_contract_title_Container_content>
+                        </Container_2_contract_title_Container>
+                        <Container_2_contract_line></Container_2_contract_line>
 
-                            <Container_2_contarcts_container>
-                                {contractData_1.map((item, index) => (
-                                    <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
-                                        {localStorage.setItem("contractId", item.contractId.toString());
-                                        localStorage.setItem("state", "NOT_PROCEED");}} key={index}>
-                                        <Container_2_contarcts_1>
-                                            <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
-                                            <Container_2_contarcts_1_content>{item.content}</Container_2_contarcts_1_content>
-                                            <Container_2_contarcts_1_info>
-                                                <Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Container_2_contarcts_1_info_content>
-                                                <Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Container_2_contarcts_1_info_content>
-                                            </Container_2_contarcts_1_info>                            
-                                        </Container_2_contarcts_1>
-                                    </Link>
-                                ))}
-                            </Container_2_contarcts_container>
+                        <Container_2_contarcts_container>
+                            {contractData_1.map((item, index) => (
+                                <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
+                                    {localStorage.setItem("contractId", item.contractId.toString());
+                                    localStorage.setItem("state", "NOT_PROCEED");}} key={index}>
+                                    <Container_2_contarcts_1>
+                                        <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
+                                        <Container_2_contarcts_1_content>{item.content}</Container_2_contarcts_1_content>
+                                        <Container_2_contarcts_1_info>
+                                            <Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Container_2_contarcts_1_info_content>
+                                            <Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Container_2_contarcts_1_info_content>
+                                        </Container_2_contarcts_1_info>                            
+                                    </Container_2_contarcts_1>
+                                </Link>
+                            ))}
+                        </Container_2_contarcts_container>
 
-                        </Container_2_contract_1>
+                    </Container_2_contract_1>
                     <Container_2_contract_2> 
                         <Container_2_contract_title_Container>
-                            <img src="./image/login_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
+                            <img src="./image/contracts_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
                             <Container_2_contract_title_Container_content>
                                 <Container_2_contract_title_Container_content_1>진행중 계약서</Container_2_contract_title_Container_content_1>
                             </Container_2_contract_title_Container_content>
@@ -175,7 +228,7 @@ const Contracts = () => {
                     </Container_2_contract_2>
                     <Container_2_contract_3>
                         <Container_2_contract_title_Container>
-                            <img src="./image/login_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
+                            <img src="./image/contracts_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
                             <Container_2_contract_title_Container_content>
                                 <Container_2_contract_title_Container_content_1>체결 계약서</Container_2_contract_title_Container_content_1>
                             </Container_2_contract_title_Container_content>
@@ -200,8 +253,72 @@ const Contracts = () => {
                         </Container_2_contarcts_container>
 
                     </Container_2_contract_3>
+                    
                 </Container_2_contract>
+
             </Container_2>
+            <Container_title_2>
+                <Container_title_2_name>🔗파기 계약 현황</Container_title_2_name>
+            </Container_title_2>
+            {/* 파기 */}
+            <Container_3>
+                <Container_3_contract>
+                    <Container_3_contract_1>
+                        <Container_2_contract_title_Container>
+                            <img src="./image/login_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
+                            <Container_2_contract_title_Container_content>
+                                <Container_2_contract_title_Container_content_1>파기 진행중 계약서</Container_2_contract_title_Container_content_1>
+                            </Container_2_contract_title_Container_content>
+                        </Container_2_contract_title_Container>
+                        <Container_2_contract_line></Container_2_contract_line>
+
+                        <Container_2_contarcts_container>
+                            {contractData_1.map((item, index) => (
+                                <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
+                                    {localStorage.setItem("contractId", item.contractId.toString());
+                                    localStorage.setItem("state", "NOT_PROCEED");}} key={index}>
+                                    <Container_2_contarcts_1>
+                                        <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
+                                        <Container_2_contarcts_1_content>{item.content}</Container_2_contarcts_1_content>
+                                        <Container_2_contarcts_1_info>
+                                            <Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Container_2_contarcts_1_info_content>
+                                            <Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Container_2_contarcts_1_info_content>
+                                        </Container_2_contarcts_1_info>                            
+                                    </Container_2_contarcts_1>
+                                </Link>
+                            ))}
+                        </Container_2_contarcts_container>
+                    </Container_3_contract_1>
+
+                    <Container_3_contract_2>
+                    <Container_2_contract_title_Container>
+                            <img src="./image/login_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
+                            <Container_2_contract_title_Container_content>
+                                <Container_2_contract_title_Container_content_1>파기 체결 계약서</Container_2_contract_title_Container_content_1>
+                            </Container_2_contract_title_Container_content>
+                        </Container_2_contract_title_Container>
+                        <Container_2_contract_line></Container_2_contract_line>
+
+                        <Container_2_contarcts_container>
+                            {contractData_1.map((item, index) => (
+                                <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
+                                    {localStorage.setItem("contractId", item.contractId.toString());
+                                    localStorage.setItem("state", "NOT_PROCEED");}} key={index}>
+                                    <Container_2_contarcts_1>
+                                        <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
+                                        <Container_2_contarcts_1_content>{item.content}</Container_2_contarcts_1_content>
+                                        <Container_2_contarcts_1_info>
+                                            <Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Container_2_contarcts_1_info_content>
+                                            <Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Container_2_contarcts_1_info_content>
+                                        </Container_2_contarcts_1_info>                            
+                                    </Container_2_contarcts_1>
+                                </Link>
+                            ))}
+                        </Container_2_contarcts_container>
+                    </Container_3_contract_2>
+                </Container_3_contract>
+            </Container_3>
+            <Footer></Footer>
 
         </div>
     );
@@ -218,16 +335,33 @@ const Banner_img = styled.img`
     border-radius : 5px;
 
 `;
+const Container_title_1 = styled.div`
+    // background : red;
+    margin-top : 10px;
+
+`
+const Container_title_1_name = styled.div`
+    position : relative;
+    // background : blue;
+    width : 1300px;
+    font-size : 20px;
+    color : #8f8f8f;
+    left : 50%;
+    transform : translate(-50%);
+
+    
+    margin-top : 15px;
+    border-bottom: 2px solid #e3e3e3;
+`
 
 const Container_2 = styled.div`
     // position : absolute;
-    background : blue;
-    // height: 280px;
+    // background : blue;
+    height: 280px;
     width: 100%;
-
-    margin-top : 10px;
-
+    margin-top : 15px;
 `;
+
 const Container_2_contract = styled.div`
     position : absolute;
     // background : green;
@@ -411,5 +545,59 @@ const Container_3_contract_write_btn = styled.div`
     align-items : center;
 `;
 
+const Container_title_2 = styled.div`
+    // background : red;
+    margin-top : 30px;
 
+`
+const Container_title_2_name = styled.div`
+    position : relative;
+    // background : blue;
+    width : 1300px;
+    font-size : 20px;
+    color : #8f8f8f;
+    left : 50%;
+    transform : translate(-50%);
+
+    border-bottom: 2px solid #e3e3e3;
+`
+const Container_3 = styled.div`
+    // position : absolute;
+    // background : blue;
+    height: 280px;
+    width: 100%;
+    margin-top : 15px;
+`;
+const Container_3_contract = styled.div`
+    position : absolute;
+    // background : green;
+    height: 280px;
+    width: 850px;
+
+
+    left : 50%;
+    transform : translate(-76.5%);
+
+    display : flex;
+    justify-content : space-between;
+`;
+const Container_3_contract_1 = styled.div`
+    background : white;
+    height: 100%;
+    width: 400px;
+    border-radius : 3px;
+    box-shadow: 1px 1px 6px 2px rgb(196, 196, 196);
+`;
+const Container_3_contract_2 = styled.div`
+    background : white;
+    height: 100%;
+    width: 400px;
+    border-radius : 3px;
+    box-shadow: 1px 1px 6px 2px rgb(196, 196, 196);
+`;
+const Footer = styled.div`
+    // background : red;
+    height : 20px;
+    width : 100%
+`
 export default Contracts;

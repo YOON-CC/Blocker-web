@@ -61,7 +61,7 @@ const Header = () => {
                 </Link>
                 {/* </StyledLink> */}
                 <Container_menu_item onClick={handleGotoLogin}> 
-                    게시글
+                    About
                 </Container_menu_item>
 
 
