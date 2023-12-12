@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef  } from 'react';
 // import { Link, useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import Header from '@/components/Header';
+import Chatting from './chatting';
 // import appStore from '../store/appStore';
 import { Element, animateScroll as scroll } from 'react-scroll'; 
 import appStore from '@/store/appStore';
@@ -139,6 +140,7 @@ const Main: React.FC = () => {
                         </AnimatedBox3>
                     </Container_3_page_2>
                 </Container_3>
+                <Chatting></Chatting>
             </Container>
         </div>
     );

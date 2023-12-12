@@ -106,11 +106,59 @@ const Contracts_object = () => {
             console.log(response.data)
 
             if (response.status === 200) {
-                // setContractObject_contractId(response.data.contractId);
-                // setContractObject_title(response.data.title);
-                // setContractObject_content(response.data.content);
-                // setContractObject_createdAt(response.data.createdAt);
-                // setContractObject_modifiedAt(response.data.modifiedAt);
+                setContractObject_contractId(response.data.contractId);
+                setContractObject_title(response.data.title);
+                setContractObject_content(response.data.content);
+                setContractObject_createdAt(response.data.createdAt);
+                setContractObject_modifiedAt(response.data.modifiedAt);
+                // //여기에 참여여부
+            }
+
+        } catch (error) {
+
+        }
+    };
+    const handleContarctObject_4 = async () => {
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-contracts/canceling/${contractId}`, {
+                headers: {
+                    'Authorization': access_token,
+                }
+            });
+
+            console.log(response.data)
+
+            if (response.status === 200) {
+                setContractObject_contractId(response.data.contractId);
+                setContractObject_title(response.data.title);
+                setContractObject_content(response.data.content);
+                setContractObject_createdAt(response.data.createdAt);
+                setContractObject_modifiedAt(response.data.modifiedAt);
+                // //여기에 참여여부
+            }
+
+        } catch (error) {
+
+        }
+    };
+    const handleContarctObject_5 = async () => {
+
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-contracts/canceled/${contractId}`, {
+                headers: {
+                    'Authorization': access_token,
+                }
+            });
+
+            console.log(response.data)
+
+            if (response.status === 200) {
+                setContractObject_contractId(response.data.contractId);
+                setContractObject_title(response.data.title);
+                setContractObject_content(response.data.content);
+                setContractObject_createdAt(response.data.createdAt);
+                setContractObject_modifiedAt(response.data.modifiedAt);
                 // //여기에 참여여부
             }
 
@@ -129,6 +177,13 @@ const Contracts_object = () => {
         else if (contractType === 'CONCLUDE'){
             handleContarctObject_3();
         }
+        else if (contractType === 'CANCELING'){
+            handleContarctObject_4();
+        }
+        else if (contractType === 'CANCELED'){
+            handleContarctObject_5();
+        }
+
 
     }, []);
 
@@ -284,6 +339,24 @@ const Contracts_object = () => {
         }
     }
 
+        //파기계약서 작성
+        const handleContractToCanceling = async (event : any) => {
+            event.preventDefault();
+            try {
+                const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-signs/contract/${contractId}`, {
+                    headers: {
+                        'Authorization': access_token,
+                    }
+                });
+    
+                if (response.status === 200) {
+                    console.log("생성완료")
+                }
+    
+            } catch (error) {
+    
+            }
+        }
     return (
         <div>
             <Header/>
@@ -335,6 +408,13 @@ const Contracts_object = () => {
                     </Container_participation_list>
                     <form onSubmit={handleContractSign}>
                         <Container_btn_container_b5>전자서명 등록</Container_btn_container_b5>
+                    </form>
+                </Container_btn_container>
+            )}
+            {contractType === 'CONCLUDE' && (
+                <Container_btn_container>
+                    <form onSubmit={handleContractToCanceling}>
+                        <Container_3_contract_write_btn>파기 계약서 작성</Container_3_contract_write_btn>
                     </form>
                 </Container_btn_container>
             )}
@@ -764,5 +844,25 @@ const Container_search_user_frame_3_b2 = styled.button`
     cursor:pointer;
 
 `;
+const Container_3_contract_write_btn = styled.button`
+    background : purple;
+    height: 100%;
+    width: 600px;
+
+
+    display : flex;
+    justify-content : center;
+    align-items: center;
+
+    font-size : 12px;
+    font-weight : bold;
+    color : white;
+    border : none;   
+    border-radius : 5px; 
+    cursor:pointer;
+
+`;
+
+
 
 export default Contracts_object;

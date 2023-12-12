@@ -276,7 +276,7 @@ const Contracts = () => {
                             {contractData_1.map((item, index) => (
                                 <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
                                     {localStorage.setItem("contractId", item.contractId.toString());
-                                    localStorage.setItem("state", "NOT_PROCEED");}} key={index}>
+                                    localStorage.setItem("state", "CANCELING");}} key={index}>
                                     <Container_2_contarcts_1>
                                         <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
                                         <Container_2_contarcts_1_content>{item.content}</Container_2_contarcts_1_content>
@@ -303,7 +303,7 @@ const Contracts = () => {
                             {contractData_1.map((item, index) => (
                                 <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
                                     {localStorage.setItem("contractId", item.contractId.toString());
-                                    localStorage.setItem("state", "NOT_PROCEED");}} key={index}>
+                                    localStorage.setItem("state", "CANCELED");}} key={index}>
                                     <Container_2_contarcts_1>
                                         <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
                                         <Container_2_contarcts_1_content>{item.content}</Container_2_contarcts_1_content>
@@ -517,10 +517,14 @@ const Container_2_contarcts_1_info_content = styled.div`
 const Container_3_contract_write = styled.div`
     position : absolute;
     // background : yellow;
+    left : 50%;
+    transform : translate(-50%);
     height: 40px;
-    width: 100%;
+    width: 340px;
     margin-top : -70px;
-    z-index : 1;
+    display : flex;
+    justify-content : center;
+    z-index : 0;
 `;
 const Container_3_contract_write_btn = styled.div`
     position : relative;
