@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket 채팅</title>
+</head>
+<body>
+<input type="text" id="authTokenInput" placeholder="인증 토큰을 입력하세요">
+<button onclick="setAuthToken()">토큰 설정</button><br><br>
+
+<input type="text" id="roomIdInput" placeholder="방 번호를 입력하세요">
+<button onclick="connectSocket()">소켓 연결</button>
+<button onclick="subscribeToRoom()">채팅방 구독</button><br><br>
+
+<input type="text" id="messageInput" placeholder="메시지를 입력하세요">
+<button onclick="sendMessage()">전송</button>
+<ul id="chatMessages"></ul>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+<script>
+    let stompClient;
+    let currentRoomId = 7;
+    let authToken;
+    function setAuthToken() {
+        const authTokenInput = document.getElementById('authTokenInput');
+        authToken = authTokenInput.value.trim().toString();
+        if (!authToken) {
+            alert('인증 토큰을 입력하세요.');
+            return;
+        }
+        window.localStorage.setItem('authToken', authToken);
+        authTokenInput.value = '';
+        alert('토큰이 설정되었습니다.');
+    }
+
+    function getAuthToken() {
+        return window.localStorage.getItem('authToken').toString();
+    }
+
+    function connectSocket() {
+        const authToken = getAuthToken();
+        if (!authToken) {
+            alert('토큰을 먼저 설정하세요.');
+            return;
+        }
+
+        //const socket = new SockJS('http://43.202.127.236:8080/chat');
+        const socket = new SockJS('http://localhost:8080/chat');
+
+        stompClient = Stomp.over(socket);
+
+        const headers = {
+            Authorization: authToken,
+        };
+
+        stompClient.connect({Authorization: authToken}, (frame) => {
+            console.log('소켓 연결됨.');
+        }, (error) => {
+            console.log('Error: ' + error);
+        });
+    }
+
+    function subscribeToRoom() {
+        const roomIdInput = document.getElementById('roomIdInput');
+        const roomId = roomIdInput.value.trim().toString();
+        if (!roomId) {
+            alert('방 번호를 입력하세요.');
+            return;
+        }
+        currentRoomId = roomId.toString();
+
+        if (!stompClient || !stompClient.connected) {
+            alert('먼저 소켓을 연결하세요.');
+            return;
+        }
+
+        const authToken = getAuthToken();
+        if (!authToken) {
+            alert('토큰을 먼저 설정하세요.');
+            return;
+        }
+
+        const headers = {
+            Authorization: authToken,
+            //ChatRoomId: currentRoomId
+        };
+
+        stompClient.subscribe(`/sub/${currentRoomId}`, (message) => {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageText = JSON.parse(message.body).content;
+            const sender = JSON.parse(message.body).sender;
+            const messageElement = document.createElement('li');
+            messageElement.textContent = sender + ': ' + messageText;
+            chatMessages.appendChild(messageElement);
+        }, headers);
+
+        roomIdInput.value = '';
+    }
+
+    function sendMessage() {
+        // if (!stompClient || !stompClient.connected) {
+        //     alert('방에 참여해야 메시지를 보낼 수 있습니다.');
+        //     return;
+        // }
+
+        const messageInput = document.getElementById('messageInput');
+        const message = messageInput.value;
+
+        const authToken = getAuthToken();
+        if (!authToken) {
+            alert('토큰을 먼저 설정하세요.');
+            return;
+        }
+
+        const headers = {
+            Authorization: authToken,
+            //ChatRoomId: currentRoomId
+        };
+
+        const chatMessage = {
+            content: message
+        };
+
+        stompClient.send(`/pub/message/${currentRoomId}`, headers, JSON.stringify(chatMessage));
+        messageInput.value = '';
+    }
+
+</script>
+</body>
+</html>
