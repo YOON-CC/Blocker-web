@@ -9,7 +9,33 @@ import ChattingList from './chattingList';
 const Chatting: React.FC = () => {
   const access_token = localStorage.getItem('access-token');
   const [isVisible, setIsVisible] = useState(false);
-  let stompClient: Stomp.Client | null = null;
+  const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
+
+  useEffect(() => {
+    const socket = new WebSocket('ws://43.202.127.236:8080/chat');
+    const stompClientInstance = Stomp.over(socket);
+  
+    const headers = {
+      Authorization: access_token || '',
+    };
+  
+    stompClientInstance.connect(headers, (frame) => {
+      console.log('Socket connected.');
+    }, (error) => {
+      console.log('Error: ' + error);
+    });
+  
+    setStompClient(stompClientInstance);
+  
+    return () => {
+      if (stompClientInstance.connected) {
+        stompClientInstance.disconnect(() => {
+          console.log('Socket disconnected.');
+        });
+      }
+    };
+  }, [isVisible]);
+  
 
   const handleShowChattingList = () => {
     setIsVisible(!isVisible);
@@ -20,7 +46,7 @@ const Chatting: React.FC = () => {
       <Container onClick={handleShowChattingList}>
         <img src="./image/login_logo.png" style={{ width: "85%", height: "85%", marginLeft: '4px', marginTop: '3.5px' }} alt="로고"></img>
       </Container>
-      {isVisible && <ChattingList isVisible={isVisible} />}
+      {isVisible && <ChattingList isVisible={isVisible} stompClient={stompClient}/>}
     </div>
   );
 };

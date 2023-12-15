@@ -1,4 +1,4 @@
-// 'use client'
+'use client'
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -6,7 +6,8 @@ import Stomp from 'stompjs';
 
 
 interface ChattingListProps {
-  isVisible: boolean; // 새로운 값 추가
+  isVisible: boolean;
+  stompClient: Stomp.Client | null;
 }
 
 interface ChattingList {
@@ -15,28 +16,12 @@ interface ChattingList {
   lastChatTime: number;
 }
 
-const ChattingList: React.FC<ChattingListProps> = ({ isVisible }) => {
-
+const ChattingList: React.FC<ChattingListProps> = ({ isVisible, stompClient }) => {
   const [chattingListData, setChattingListData] = useState<ChattingList[]>([]);
   const [openChatting, setOpenChatting] = useState(false);
-  
-  let stompClientInstance: Stomp.Client | null = null;
-  
+  const [messages, setMessages] = useState<{ sender: string; content: string }[]>([]);
+
   const access_token = localStorage.getItem('access-token') ?? '';
-  const socket = new WebSocket('ws://43.202.127.236:8080/chat');
-
-
-  stompClientInstance = Stomp.over(socket);
-
-  const headers = {
-    Authorization: access_token,
-  };
-
-  stompClientInstance.connect(headers, (frame) => {
-    console.log('소켓 연결됨.');
-  }, (error) => {
-    console.log('Error: ' + error);
-  });
 
   const handleChattingList = async () => {
     try {
@@ -47,7 +32,7 @@ const ChattingList: React.FC<ChattingListProps> = ({ isVisible }) => {
       });
       setChattingListData(response.data);
     } catch (error) {
-      console.error('채팅방 목록을 불러오는 중 오류 발생:', error);
+      console.error('Error', error);
     }
   };
 
@@ -56,22 +41,15 @@ const ChattingList: React.FC<ChattingListProps> = ({ isVisible }) => {
   }, [isVisible]);
 
   const handleChatRoomClick = (chatRoomId: number) => {
-    setOpenChatting(true)
-
-    if (stompClientInstance) {
-      const subscription = stompClientInstance.subscribe(`/sub/${chatRoomId}`, (message: { body: string }) => {
-        const chatMessages = document.getElementById('chatMessages') as HTMLUListElement;
-        const messageText = JSON.parse(message.body).content;
-        const sender = JSON.parse(message.body).sender;
-        const messageElement = document.createElement('div');
-        messageElement.textContent = sender + ': ' + messageText;
-        chatMessages.appendChild(messageElement);
+    if (stompClient) {
+      const subscription = stompClient.subscribe(`/sub/${chatRoomId}`, (message: { body: string }) => {
+        const newMessage = JSON.parse(message.body);
+        setMessages((prevMessages) => [...prevMessages, { sender: newMessage.sender, content: newMessage.content }]);
       }, {
-        Authorization: access_token,
+        Authorization: access_token, 
       });
-
+      setOpenChatting(true);
       return () => {
-        // 컴포넌트가 언마운트될 때 채널 구독 해제
         subscription.unsubscribe();
       };
     }
@@ -80,30 +58,26 @@ const ChattingList: React.FC<ChattingListProps> = ({ isVisible }) => {
   const sendMessage = () => {
     const messageInput = document.getElementById('messageInput') as HTMLInputElement;
     const message = messageInput.value.trim();
-
+  
     if (!message) {
-      alert('메시지를 입력하세요.');
+      alert('Enter a message.');
       return;
     }
-
-    if (stompClientInstance && stompClientInstance.connected) {
-      const currentRoomId = 9; // 실제로 사용하는 방법으로 대체
+  
+    if (stompClient) {
+      const currentRoomId = 9; 
       const headers = {
         Authorization: access_token,
       };
-
+  
       const chatMessage = {
         content: message,
       };
+      stompClient.send(`/pub/message/${currentRoomId}`, headers, JSON.stringify(chatMessage));
 
-      stompClientInstance.send(`/pub/message/${currentRoomId}`, headers, JSON.stringify(chatMessage));
-
-      messageInput.value = '';
-    } else {
-      alert('소켓에 연결되어 있지 않습니다.');
     }
+      messageInput.value = '';
   };
-
   return (
     <div>
       <ListContainer>
@@ -118,7 +92,14 @@ const ChattingList: React.FC<ChattingListProps> = ({ isVisible }) => {
         {openChatting && (
           <ChattingObjectContainer>
             <ChattingObjectFrame>
-              <ChattingMessageObject id="chatMessages"></ChattingMessageObject>
+            <ChattingMessageObject id="chatMessages">
+              {messages.map((message, index) => (
+                <div key={index}>
+                  {message.content}
+                </div>
+              ))}
+            </ChattingMessageObject>
+              
             </ChattingObjectFrame>
             <ChattingOjbectMessageFrame>
               <ChattingInput type="text" id="messageInput"/>
