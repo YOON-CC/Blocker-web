@@ -11,36 +11,6 @@ const Chatting: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   let stompClient: Stomp.Client | null = null;
 
-
-  useEffect(() => {
-    if (isVisible) {
-      // Stomp 연결 설정
-      // const socket = new SockJS('http://43.202.127.236:8080/chat');
-      const socket = new WebSocket('ws://43.202.127.236:8080/chat');
-
-      stompClient = Stomp.over(socket);
-
-      const headers = {
-        Authorization: access_token, 
-      };
-
-      stompClient.connect(headers, (frame) => {
-        console.log('소켓 연결됨.');
-      }, (error) => {
-        console.log('Error: ' + error);
-      });
-
-      return () => {
-        // 컴포넌트 언마운트 시 정리
-        if (stompClient && stompClient.connected) {
-          stompClient.disconnect(() => {
-            console.log('Stomp 연결 해제됨');
-          });
-        }
-      };
-    }
-  }, [isVisible]);
-
   const handleShowChattingList = () => {
     setIsVisible(!isVisible);
   };
@@ -50,7 +20,7 @@ const Chatting: React.FC = () => {
       <Container onClick={handleShowChattingList}>
         <img src="./image/login_logo.png" style={{ width: "85%", height: "85%", marginLeft: '4px', marginTop: '3.5px' }} alt="로고"></img>
       </Container>
-      {isVisible && <ChattingList stompClient={stompClient} />}
+      {isVisible && <ChattingList isVisible={isVisible} />}
     </div>
   );
 };
