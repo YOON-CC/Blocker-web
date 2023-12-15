@@ -19,6 +19,7 @@ interface ChattingList {
 const ChattingList: React.FC<ChattingListProps> = ({ isVisible, stompClient }) => {
   const [chattingListData, setChattingListData] = useState<ChattingList[]>([]);
   const [openChatting, setOpenChatting] = useState(false);
+  const [roomId, setRoomId] = useState(-1);
   const [messages, setMessages] = useState<{ sender: string; content: string }[]>([]);
 
   const access_token = localStorage.getItem('access-token') ?? '';
@@ -38,7 +39,7 @@ const ChattingList: React.FC<ChattingListProps> = ({ isVisible, stompClient }) =
 
   useEffect(() => {
     handleChattingList();
-  }, [isVisible]);
+  }, [isVisible, openChatting]);
 
   const handleChatRoomClick = (chatRoomId: number) => {
     if (stompClient) {
@@ -49,12 +50,13 @@ const ChattingList: React.FC<ChattingListProps> = ({ isVisible, stompClient }) =
         Authorization: access_token, 
       });
       setOpenChatting(true);
+      setRoomId(chatRoomId)
       return () => {
         subscription.unsubscribe();
       };
     }
   };
-
+  
   const sendMessage = () => {
     const messageInput = document.getElementById('messageInput') as HTMLInputElement;
     const message = messageInput.value.trim();
@@ -65,7 +67,7 @@ const ChattingList: React.FC<ChattingListProps> = ({ isVisible, stompClient }) =
     }
   
     if (stompClient) {
-      const currentRoomId = 9; 
+      const currentRoomId = roomId; 
       const headers = {
         Authorization: access_token,
       };
@@ -78,42 +80,61 @@ const ChattingList: React.FC<ChattingListProps> = ({ isVisible, stompClient }) =
     }
       messageInput.value = '';
   };
-  return (
-    <div>
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      sendMessage();
+    }
+  };
+return (
+  <div>
+    {openChatting ? (
+      <ChattingObjectContainer>
+        <ChattingObjectFrame>
+          <ChattingMessageObject id="chatMessages">
+            {messages.map((message, index) => (
+              <div key={index}>
+                {message.sender} :{message.content}
+              </div>
+            ))}
+          </ChattingMessageObject>
+        </ChattingObjectFrame>
+        <ChattingOjbectMessageFrame>
+          <ChattingInput
+            type="text"
+            id="messageInput"
+            onKeyDown={handleKeyPress} // Add this line
+          />
+          <ChattingButton onClick={sendMessage}>
+            <img
+              src="../image/button_logo.png"
+              style={{ width: "140%", height: "110%", marginTop: "-1.5px", marginLeft: '-3px' }}
+              alt="Button Logo"
+            />
+          </ChattingButton>
+        </ChattingOjbectMessageFrame>
+      </ChattingObjectContainer>
+    ) : (
       <ListContainer>
         {chattingListData.map((item, index) => (
           <ListContainerFrame key={index} onClick={() => handleChatRoomClick(item.chatRoomId)}>
-            {item.chatRoomId}
-            {item.lastChat}
-            {item.lastChatTime}
+            <ListContainerFrame1>{item.chatRoomId}</ListContainerFrame1>
+            <ListContainerFrame2>
+              <ListContainerFrame2_1>{item.lastChatTime}</ListContainerFrame2_1>
+              <ListContainerFrame2_2>{item.lastChat}</ListContainerFrame2_2>              
+            </ListContainerFrame2>
+
           </ListContainerFrame>
         ))}
       </ListContainer>
-        {openChatting && (
-          <ChattingObjectContainer>
-            <ChattingObjectFrame>
-            <ChattingMessageObject id="chatMessages">
-              {messages.map((message, index) => (
-                <div key={index}>
-                  {message.content}
-                </div>
-              ))}
-            </ChattingMessageObject>
-              
-            </ChattingObjectFrame>
-            <ChattingOjbectMessageFrame>
-              <ChattingInput type="text" id="messageInput"/>
-              <ChattingButton onClick={sendMessage}><img src="../image/button_logo.png" style={{ width: "140%", height: "110%", marginTop : "-1.5px", marginLeft : '-3px'}}></img></ChattingButton>
-            </ChattingOjbectMessageFrame>
+    )}
+  </div>
+);
 
-          </ChattingObjectContainer>
-        )}
-    </div>
-  );
 };
 
 const ListContainer = styled.div`
-  background: white;
+  background: rgba(0, 0, 0, 0.3);
   position: fixed;
   width: 250px;
   height: 400px;
@@ -129,24 +150,67 @@ const ListContainer = styled.div`
 `;
 
 const ListContainerFrame = styled.div`
-  background: #e3e3e3;
+  background: rgba(0, 0, 0, 0.7);
+  // background: rgba(255, 255, 255, 0.2); 
   width: 240px;
   height: 60px;
   margin-top: 5px;
   margin-left: 5px;
   border-radius: 3px;
+  display : flex;
   &:hover {
     filter: brightness(0.9);
   }
 `;
+const ListContainerFrame1 = styled.div`
+  position : relative;
+  color : white;
+  font-size : 30px;
+  height: 100%;
+  width: 50px;
+  display: flex;
+  justify-content : center;
+  align-items: center;
+  background : #435DF1;
+`;
+const ListContainerFrame2 = styled.div`
+  // background : red;
+  position : relative;
+  height: 100%;
+  width: 190px;
+  justify-content : center;
+  align-items: center;
+`;
+const ListContainerFrame2_1 = styled.div`
+  // background : red;
+  position : relative;
+  color : #435DF1;
+  height: 50%;
+  width: 100%;
+  display : flex;
+  justify-content : center;
+  align-items: center;
+  font-size : 13px;
+`;
+const ListContainerFrame2_2 = styled.div`
+  // background : red;
+  position : relative;
+  color : white;
+  height: 50%;
+  width: 100;
+  display : flex;
+  justify-content : center;
+  align-items: center;
+  font-size : 13px;
 
+`;
 const ChattingObjectContainer = styled.div`
   background: rgba(0, 0, 0, 0.6);
   position: fixed;
   width: 250px;
   height: 400px;
   margin-top: -130px;
-  margin-left: -350px;
+  margin-left: -100px;
   top: 78%;
   left: 96%;
   transform: translate(-50%, -50%);
