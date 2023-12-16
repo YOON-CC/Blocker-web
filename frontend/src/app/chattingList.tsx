@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Stomp from 'stompjs';
@@ -21,7 +21,13 @@ const ChattingList: React.FC<ChattingListProps> = ({ isVisible, stompClient }) =
   const [openChatting, setOpenChatting] = useState(false);
   const [roomId, setRoomId] = useState(-1);
   const [messages, setMessages] = useState<{ sender: string; content: string }[]>([]);
-
+  const chattingObjectFrameRef = useRef<HTMLDivElement | null>(null);
+  
+  useEffect(() => {
+    if (chattingObjectFrameRef.current) {
+      chattingObjectFrameRef.current.scrollTop = chattingObjectFrameRef.current.scrollHeight;
+    }
+  }, [messages]);
   const access_token = localStorage.getItem('access-token') ?? '';
 
   const handleChattingList = async () => {
@@ -41,14 +47,38 @@ const ChattingList: React.FC<ChattingListProps> = ({ isVisible, stompClient }) =
     handleChattingList();
   }, [isVisible, openChatting]);
 
+  
+  const handlePrevMessage = async (chatRoomId: number) => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/chatrooms/${chatRoomId}`, {
+        params: {
+          size : 20,
+          page: 0,
+        },
+        headers: { 
+          'Authorization': access_token,
+        },
+      });
+      console.log(response.data)
+      setMessages(response.data.reverse());
+    } catch (error) {
+      console.error('Error', error);
+    }
+  };
+
+
   const handleChatRoomClick = (chatRoomId: number) => {
+    handlePrevMessage(chatRoomId);
+        
     if (stompClient) {
-      const subscription = stompClient.subscribe(`/sub/${chatRoomId}`, (message: { body: string }) => {
+        const subscription = stompClient.subscribe(`/sub/${chatRoomId}`, (message: { body: string }) => {
+
         const newMessage = JSON.parse(message.body);
         setMessages((prevMessages) => [...prevMessages, { sender: newMessage.sender, content: newMessage.content }]);
       }, {
         Authorization: access_token, 
       });
+
       setOpenChatting(true);
       setRoomId(chatRoomId)
       return () => {
@@ -86,52 +116,51 @@ const ChattingList: React.FC<ChattingListProps> = ({ isVisible, stompClient }) =
       sendMessage();
     }
   };
-return (
-  <div>
-    {openChatting ? (
-      <ChattingObjectContainer>
-        <ChattingObjectFrame>
-          <ChattingMessageObject id="chatMessages">
-            {messages.map((message, index) => (
-              <div key={index}>
-                {message.sender} :{message.content}
-              </div>
-            ))}
-          </ChattingMessageObject>
-        </ChattingObjectFrame>
-        <ChattingOjbectMessageFrame>
-          <ChattingInput
-            type="text"
-            id="messageInput"
-            onKeyDown={handleKeyPress} // Add this line
-          />
-          <ChattingButton onClick={sendMessage}>
-            <img
-              src="../image/button_logo.png"
-              style={{ width: "140%", height: "110%", marginTop: "-1.5px", marginLeft: '-3px' }}
-              alt="Button Logo"
+
+  return (
+    <div>
+      {openChatting ? (
+        <ChattingObjectContainer>
+          <ChattingObjectFrame ref={chattingObjectFrameRef}>
+            <ChattingMessageObject id="chatMessages">
+              {messages.map((message, index) => (
+                <div key={index}>
+                  {message.sender} :{message.content}
+                </div>
+              ))}
+            </ChattingMessageObject>
+          </ChattingObjectFrame>
+          <ChattingOjbectMessageFrame>
+            <ChattingInput
+              type="text"
+              id="messageInput"
+              onKeyDown={handleKeyPress} // Add this line
             />
-          </ChattingButton>
-        </ChattingOjbectMessageFrame>
-      </ChattingObjectContainer>
-    ) : (
-      <ListContainer>
-        {chattingListData.map((item, index) => (
-          <ListContainerFrame key={index} onClick={() => handleChatRoomClick(item.chatRoomId)}>
-            <ListContainerFrame1>{item.chatRoomId}</ListContainerFrame1>
-            <ListContainerFrame2>
-              <ListContainerFrame2_1>{item.lastChatTime}</ListContainerFrame2_1>
-              <ListContainerFrame2_2>{item.lastChat}</ListContainerFrame2_2>              
-            </ListContainerFrame2>
+            <ChattingButton onClick={sendMessage}>
+              <img
+                src="../image/button_logo.png"
+                style={{ width: "140%", height: "110%", marginTop: "-1.5px", marginLeft: '-3px' }}
+                alt="Button Logo"
+              />
+            </ChattingButton>
+          </ChattingOjbectMessageFrame>
+        </ChattingObjectContainer>
+      ) : (
+        <ListContainer>
+          {chattingListData.map((item, index) => (
+            <ListContainerFrame key={index} onClick={() => handleChatRoomClick(item.chatRoomId)}>
+              <ListContainerFrame1>{item.chatRoomId}</ListContainerFrame1>
+              <ListContainerFrame2>
+                <ListContainerFrame2_1>{item.lastChatTime}</ListContainerFrame2_1>
+                <ListContainerFrame2_2>{item.lastChat}</ListContainerFrame2_2>              
+              </ListContainerFrame2>
 
-          </ListContainerFrame>
-        ))}
-      </ListContainer>
-    )}
-  </div>
-);
-
-};
+            </ListContainerFrame>
+          ))}
+        </ListContainer>
+      )}
+    </div>
+  );};
 
 const ListContainer = styled.div`
   background: rgba(0, 0, 0, 0.3);
