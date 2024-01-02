@@ -167,6 +167,25 @@ const Post = () => {
             // 에러 처리 코드 추가
         }
     };
+
+    const handleDirectMessage = async (event: any) => {
+        event.preventDefault();
+    
+        try {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/chatrooms/boards/${boardId}`, // 경로 변수 사용
+                {
+                    headers: {
+                        Authorization: access_token,
+                    },
+                }
+            );
+            console.log(response.status)
+
+        } catch (error) {
+            // 에러 처리 코드 추가
+        }
+    };
+
     return (
         <div>
             <Header/>
@@ -231,7 +250,7 @@ const Post = () => {
                         {postObject_isBookmark == true && <Container_1_c2_btn_1_true><FontAwesomeIcon icon="bookmark" style={{ color: '#00ff6a', fontSize : "20px", marginRight : "5px"}} />찜</Container_1_c2_btn_1_true>}
                     </form>
                     {/* <StyledLink to="/chat" style={{ textDecoration: 'none' }}> */}
-                        <Container_1_c2_btn_2><FontAwesomeIcon icon="comment" style={{ color: '#ffffff', fontSize : "20px", marginRight : "5px"}} />채팅하기</Container_1_c2_btn_2>
+                        <Container_1_c2_btn_2 onClick={handleDirectMessage}><FontAwesomeIcon icon="comment" style={{ color: '#ffffff', fontSize : "20px", marginRight : "5px"}} />채팅하기</Container_1_c2_btn_2>
                     {/* </StyledLink> */}
                     <form>  
                         <Container_1_c2_btn_3><FontAwesomeIcon icon="bullhorn" style={{ color: '#ffffff', fontSize : "20px", marginRight : "5px"}} />신고하기</Container_1_c2_btn_3>
