@@ -176,6 +176,17 @@ const ListContainer = styled.div`
   cursor: pointer;
   border-radius: 5px;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
+
+  overflow: auto; /* 스크롤 추가 */
+
+  /* 스크롤바 숨기기 */
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: white;
+  }
 `;
 
 const ListContainerFrame = styled.div`
@@ -260,6 +271,7 @@ const ChattingObjectFrame = styled.div`
   border-radius: 5px;
   cursor: pointer;
   overflow: auto; /* 스크롤 추가 */
+  
   /* 스크롤바 숨기기 */
   &::-webkit-scrollbar {
     width: 2px;

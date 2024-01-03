@@ -87,19 +87,19 @@ const Main: React.FC = () => {
                         </Container_1_page_1_element_3>
                         <Container_1_page_1_element_4>
                             <img src="./image/enter_1.png" style={{ width: "30px", height: "30px", marginTop:"15px", marginLeft:"10px"}}></img>
-                            <div style={{marginTop:"20px" , marginLeft:"10px"}}>자세히 보기</div>
+                            <a href="https://github.com/YOON-CC/Blocker-web" target="_blank" rel="noopener noreferrer" style={{textDecoration: "none", color: "inherit"}}><div style={{marginTop:"20px" , marginLeft:"10px"}}>자세히 보기</div></a>
                         </Container_1_page_1_element_4>
                     </Container_1_page_1>
                     <Container_1_page_2>
                         <AnimatedBox1 ref={targetRef1} style={{ opacity: isVisible1 ? 1 : 0 }}>
-                            <img src="./image/temp_img.png" style={{ width: "600px", height: "360px", marginTop:"140px"}}></img>
+                            <img src="./image/temp_img2.jpg" style={{ width: "600px", height: "360px", marginTop:"140px"}}></img>
                         </AnimatedBox1>
                     </Container_1_page_2>
                 </Container_1>
                 <Container_2>
                     <Container_2_page_1>
                         <AnimatedBox2 ref={targetRef2} style={{ opacity: isVisible2 ? 1 : 0 }}>
-                            <img src="./image/temp_img2.png" style={{ width: "600px", height: "340px"}}></img>
+                            <img src="./image/temp_img.jpg" style={{ width: "600px", height: "340px"}}></img>
                         </AnimatedBox2>
                     </Container_2_page_1>
                     <Container_2_page_2>
@@ -114,7 +114,7 @@ const Main: React.FC = () => {
                         </Container_2_page_2_element_3>
                         <Container_2_page_2_element_4>
                             <img src="./image/enter_1.png" style={{ width: "30px", height: "30px", marginTop:"15px", marginLeft:"10px"}}></img>
-                            <div style={{marginTop:"20px" , marginLeft:"10px"}}>자세히 보기</div>
+                            <a href="https://github.com/nu-jey/Blocker-iOS" target="_blank" rel="noopener noreferrer" style={{textDecoration: "none", color: "inherit"}}><div style={{marginTop:"20px" , marginLeft:"10px"}}>자세히 보기</div></a>
                         </Container_2_page_2_element_4>
                     </Container_2_page_2>
                 </Container_2>
@@ -131,12 +131,12 @@ const Main: React.FC = () => {
                         </Container_3_page_1_element_3>
                         <Container_3_page_1_element_4>
                             <img src="./image/enter_1.png" style={{ width: "30px", height: "30px", marginTop:"15px", marginLeft:"10px"}}></img>
-                            <div style={{marginTop:"20px" , marginLeft:"10px"}}>자세히 보기</div>
+                            <a href="https://www.youtube.com/watch?v=2heD-sxyetw&t=260s" target="_blank" rel="noopener noreferrer" style={{textDecoration: "none", color: "inherit"}}><div style={{marginTop:"20px" , marginLeft:"10px"}}>자세히 보기</div></a>
                         </Container_3_page_1_element_4>
                     </Container_3_page_1>
                     <Container_3_page_2>
                         <AnimatedBox3 ref={targetRef3} style={{ opacity: isVisible3 ? 1 : 0 }}>
-                            <img src="./image/temp_img.png" style={{ width: "600px", height: "360px", marginTop:"140px"}}></img>
+                            <img src="./image/temp_img3.jpg" style={{ width: "600px", height: "360px", marginTop:"140px"}}></img>
                         </AnimatedBox3>
                     </Container_3_page_2>
                 </Container_3>

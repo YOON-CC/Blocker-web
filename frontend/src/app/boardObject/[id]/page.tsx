@@ -1,15 +1,16 @@
 'use client'
+
 import React, { useState, useEffect } from 'react';
 // import { Link, useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import Header from '@/components/Header';
+import Chatting from '@/app/chatting';
 import axios from 'axios';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBookmark, faEye, faCheck, faComment, faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from "next/link";
 import Banner from '@/components/Banner';
-
 
 const Post = () => {
 
@@ -168,6 +169,7 @@ const Post = () => {
         }
     };
 
+    //1대1채팅하기
     const handleDirectMessage = async (event: any) => {
         event.preventDefault();
     
@@ -182,14 +184,16 @@ const Post = () => {
             console.log(response.status)
 
         } catch (error) {
-            // 에러 처리 코드 추가
+
         }
     };
 
     return (
         <div>
             <Header/>
+            <Chatting></Chatting>
             <AllContainer>
+            
             {postObject_isWriter === true && 
                 <Edit_container>
                     <Edit_container_btn_container>

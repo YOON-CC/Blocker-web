@@ -44,7 +44,7 @@ const Chatting: React.FC = () => {
   return (
     <div>
       <Container onClick={handleShowChattingList}>
-        <img src="./image/login_logo.png" style={{ width: "85%", height: "85%", marginLeft: '4px', marginTop: '3.5px' }} alt="로고"></img>
+        <img src="/image/login_logo.png" style={{ width: "85%", height: "85%", marginLeft: '4px', marginTop: '3.5px' }} alt="로고"></img>
       </Container>
       {isVisible && <ChattingList isVisible={isVisible} stompClient={stompClient}/>}
     </div>
