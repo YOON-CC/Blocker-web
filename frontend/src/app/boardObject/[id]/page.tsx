@@ -11,6 +11,8 @@ import { faBookmark, faEye, faCheck, faComment, faBullhorn } from '@fortawesome/
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from "next/link";
 import Banner from '@/components/Banner';
+import { getBoardData, addBookmark, removeBookmark, deleteBoard, createChatroom } from '@/api/boardObject';
+
 
 const Post = () => {
 
@@ -20,8 +22,8 @@ const Post = () => {
     library.add(faComment);
     library.add(faBullhorn);
 
-    const access_token = localStorage.getItem('access-token');
-    const boardId = localStorage.getItem('boardId');
+    const access_token : any = localStorage.getItem('access-token');
+    const boardId : any = localStorage.getItem('boardId');
 
     //게시글 object 배열
     const [postObject_boardId, setPostObject_boardId] = useState(0); 
@@ -87,45 +89,28 @@ const Post = () => {
 
 
     //북마크 등록
-    const handleBoardBookmark_1 = async (event : any) => {
+    const handleBoardBookmark_1 = async (event: any) => {
         event.preventDefault();
 
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/bookmarks`, {
-                boardId: boardId,
-            }, 
-            {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-            if (response.status == 200){
-                setPostObject_isBookmark(true);
-            }
+            await addBookmark(boardId, access_token);
+            setPostObject_isBookmark(true);
+        } catch (error) {
+            // Handle error
+            console.error('Error adding bookmark:', error);
         }
-        catch (error) {
-
-        }
-    }
+    };
 
     //북마크 삭제
     const handleBoardBookmark_2 = async (event: any) => {
         event.preventDefault();
-    
+
         try {
-            const response = await axios.delete(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/bookmarks/${boardId}`, // 경로 변수 사용
-                {
-                    headers: {
-                        Authorization: access_token,
-                    },
-                }
-            );
-    
-            if (response.status === 200) {
-                setPostObject_isBookmark(false);
-            }
+            await removeBookmark(boardId, access_token);
+            setPostObject_isBookmark(false);
         } catch (error) {
-            // 에러 처리 코드 추가
+            // Handle error
+            console.error('Error removing bookmark:', error);
         }
     };
 
@@ -153,38 +138,24 @@ const Post = () => {
     //게시글 삭제
     const handleBoardDelete = async (event: any) => {
         event.preventDefault();
-    
-        try {
-            const response = await axios.delete(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/boards/${boardId}`, // 경로 변수 사용
-                {
-                    headers: {
-                        Authorization: access_token,
-                    },
-                }
-            );
-            console.log(response.status)
 
+        try {
+            await deleteBoard(boardId, access_token);
         } catch (error) {
-            // 에러 처리 코드 추가
+            // Handle error
+            console.error('Error deleting board:', error);
         }
     };
 
     //1대1채팅하기
     const handleDirectMessage = async (event: any) => {
         event.preventDefault();
-    
+
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/chatrooms/boards/${boardId}`, // 경로 변수 사용
-                {
-                    headers: {
-                        Authorization: access_token,
-                    },
-                }
-            );
-            console.log(response.status)
-
+            await createChatroom(boardId, access_token);
         } catch (error) {
-
+            // Handle error
+            console.error('Error creating chatroom:', error);
         }
     };
 

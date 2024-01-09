@@ -1,6 +1,5 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-// import { Link, useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import Header from '@/components/Header';
 import Banner from '@/components/Banner';
@@ -8,6 +7,7 @@ import axios from 'axios';
 import Link from "next/link";
 import Login from '../Login';
 import Chatting from '@/app/chatting';
+import { fetchBoardList } from '@/api/boardList';
 
 
 interface BoardItem {
@@ -26,8 +26,8 @@ const imageUrls = [
     '../image/boardbackgroundimg1.png',
     '../image/boardbackgroundimg2.png',
     '../image/boardbackgroundimg3.png',
-    // Add more image URLs as needed
 ];
+
 function getRandomImageUrl() {
     const randomIndex = Math.floor(Math.random() * imageUrls.length);
     return imageUrls[randomIndex];
@@ -40,33 +40,21 @@ const Board = () => {
     console.log(access_token)
 
     const handleBoardList = async () => {
-        
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/boards`, {
-                params: {
-                    size: 8,
-                    page: 0,
-                },
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-            console.log(response.data)
-            if (response.status === 200) {
-                console.log("옴")
-                setBoardData(response.data);
+            const response = await fetchBoardList();
+            console.log(response);
+
+            if (response) {
+                setBoardData(response);
             }
         } catch (error) {
-
+            // 오류 처리 로직 추가
+            console.error('게시판 목록을 불러오는 중 오류 발생:', error);
         }
-
     };
 
     useEffect(() => {
-        // 페이지가 로드될 때 한 번만 호출되는 로직
         handleBoardList();
-
-        // 일정 시간 간격으로 배너 이미지 변경
     }, []);
 
     return (

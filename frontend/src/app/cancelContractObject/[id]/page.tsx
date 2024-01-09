@@ -10,7 +10,7 @@ import axios from 'axios';
 import Link from "next/link";
 import Swal from 'sweetalert2';
 import Chatting from '@/app/chatting';
-
+import { getCancelingContractData, getCanceledContractData, patchCancelSign, patchAgreementSign } from '@/api/cancelContractsObject';
 
 interface Paticipation {
     contractor: string;
@@ -19,8 +19,8 @@ interface Paticipation {
 
 const Cancel_Contracts_object = () => {
 
-    const access_token = localStorage.getItem('access-token');
-    const contractId = localStorage.getItem('contractId');
+    const access_token : any  = localStorage.getItem('access-token');
+    const contractId : any = localStorage.getItem('contractId');
     console.log("파기계약서", contractId)
     const contractType = localStorage.getItem('state');
 
@@ -29,72 +29,40 @@ const Cancel_Contracts_object = () => {
     const [contractObject_content, setContractObject_content] = useState(''); 
     const [contractObject_createdAt, setContractObject_createdAt] = useState(''); 
     const [contractObject_modifiedAt, setContractObject_modifiedAt] = useState(''); 
-    const [contractObject_participation, setContractObject_participation] = useState<Paticipation[]>([])
     const [contractObject_destroy_participation, setContractObject_destroy_participation] = useState<Paticipation[]>([])
 
 
-
-    //계약참여자 찾기 모달 상태
-    const [contractSearchModal, setContractSearchModal] = useState(false); 
-
-    //전자서명 하기
-    const [contractSignModal, setContractSignModal] = useState(false); 
-
-
-    //계약참여자 검색 
-    const [searchUserContent, setSearchUserContent] = useState('');
-
-    //계약참여자 정보 받기
-    const [searchUserContentEmail, setSearchUserContentEmail] = useState<string[]>([]);
-    const [searchUserContentName, setSearchUserContentName] = useState(''); 
-
     const handleContarctObject_4 = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-contracts/canceling/${contractId}`, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-
-            if (response.status === 200) {
-                setContractObject_contractId(response.data.contractId);
-                setContractObject_title(response.data.title);
-                setContractObject_content(response.data.content);
-                setContractObject_createdAt(response.data.createdAt);
-                setContractObject_modifiedAt(response.data.modifiedAt);
-                setContractObject_destroy_participation(response.data.contractorAndSignStates)
-            }
-
+            const contractData = await getCancelingContractData(contractId, access_token);
+            setContractObject_contractId(contractData.contractId);
+            setContractObject_title(contractData.title);
+            setContractObject_content(contractData.content);
+            setContractObject_createdAt(contractData.createdAt);
+            setContractObject_modifiedAt(contractData.modifiedAt);
+            setContractObject_destroy_participation(contractData.contractorAndSignStates);
+            // Update state with contractData
+            // ...
         } catch (error) {
-
+            // Handle error
         }
     };
+
     const handleContarctObject_5 = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-contracts/canceled/${contractId}`, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-
-            if (response.status === 200) {
-                setContractObject_contractId(response.data.contractId);
-                setContractObject_title(response.data.title);
-                setContractObject_content(response.data.content);
-                setContractObject_createdAt(response.data.createdAt);
-                setContractObject_modifiedAt(response.data.modifiedAt);
-            }
-
+            const contractData = await getCanceledContractData(contractId, access_token);
+            setContractObject_contractId(contractData.contractId);
+            setContractObject_title(contractData.title);
+            setContractObject_content(contractData.content);
+            setContractObject_createdAt(contractData.createdAt);
+            setContractObject_modifiedAt(contractData.modifiedAt);
+            // Update state with contractData
+            // ...
         } catch (error) {
-
+            // Handle error
         }
     };
+
     console.log(contractType,"입니다.", contractId, "입니다.")
     useEffect(() => {
         if (contractType === 'CANCELING'){
@@ -108,118 +76,25 @@ const Cancel_Contracts_object = () => {
     }, []);
 
 
-
-    //유저검색 input 변화
-    const handleSearchUserChange = (event : any) => {
-        setSearchUserContent(event.target.value)
-    };
-
-    //유저 찾기
-    const handleSearchUser = async (event : any) => {
-        event.preventDefault();
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/users/search`, {
-                params: {
-                    keyword: searchUserContent,
-                },
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            
-            if (response.status === 200) {
-                const updatedEmailList = [...searchUserContentEmail, response.data[0].email];
-                setSearchUserContentEmail(updatedEmailList);
-
-                console.log(updatedEmailList)
-            }
-        } catch (error) {
-
-        }
-    }
- 
-    //계약 진행하기 버튼
-    const handleContractToProceed = async (event : any) => {
-        event.preventDefault();
-        try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/agreement-signs`, {
-                contractId: contractId,
-                contractors : searchUserContentEmail,
-            }, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            if (response.status === 201) {
-                console.log("생성완료")
-            }
-
-        } catch (error) {
-
-        }
-    }
-
-    //진행중 전자서명
-    const handleContractSign1 = async (event : any) => {
-        try {
-            const response = await axios.patch(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/agreement-signs/contract/${contractId}`, {
-
-            }, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            if (response.status === 200) {
-                console.log("옴")
-            }
-
-        } catch (error) {
-
-        }
-    }
-
     //전자서명 등록
-    const handleContractSign2 = async (event : any) => {
+    const handleContractSign2 = async (event: any) => {
         try {
-            const response = await axios.patch(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-signs/cancel-contract/${contractId}`, {
-
-            }, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            if (response.status === 200) {
-                console.log("옴")
-            }
-
+            await patchCancelSign(contractId, access_token);
+            // Handle success
         } catch (error) {
-
+            // Handle error
         }
-    }
+    };
     
 
     //파기계약서 작성
     const handleCancelingContract = async (event: any) => {
         event.preventDefault();
         try {
-            const response = await axios.patch(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/agreement-signs/contract/${contractId}`, {
-
-            }, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            if (response.status === 200) {
-                console.log("옴")
-            }
-
+            await patchAgreementSign(contractId, access_token);
+            // Handle success
         } catch (error) {
-
+            // Handle error
         }
     };
 

@@ -5,11 +5,12 @@ import React, { useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Header from '@/components/Header';
 import axios from 'axios';
+import { getBoardData, uploadImages, editBoard } from '@/api/boardEdit';
 
 const Postedit = () => {
-    const access_token = localStorage.getItem('access-token');
+    const access_token : any = localStorage.getItem('access-token');
     console.log(access_token)
-    const boardId = localStorage.getItem('boardId');
+    const boardId : any = localStorage.getItem('boardId');
 
 
     //게시글객체 기본 정보
@@ -35,35 +36,28 @@ const Postedit = () => {
 
     //초반 데이터
     const handlePostObject = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/boards/${boardId}`, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
+            const boardData = await getBoardData(boardId, access_token);
 
-            
-            if (response.status === 200) {
-                setPostObject_boardId(response.data.boardId);
-                setPostObject_title(response.data.title);
-                setPostObject_name(response.data.name);
-                setPostObject_content(response.data.content);
-                setPostObject_representImage(response.data.representImage);
-                setPostObject_view(response.data.view);
-                setPostObject_bookmarkCount(response.data.bookmarkCount);
-                setPostObject_createdAt(response.data.createdAt);
-                setPostObject_modifiedAt(response.data.modifiedAt);
-                setPostObject_images_idx(response.data.images.map((image: { imageId: number; }) => image.imageId));
-                setPostObject_images_addr(response.data.images.map((image: { imageAddress: string; }) => image.imageAddress));
-                setPostObject_info(response.data.info);
-                setPostObject_contractId(response.data.contractId);
-                setPostObject_isWriter(response.data.isWriter);
-                setPostObject_isBookmark(response.data.isBookmark);
-            }
-
+            setPostObject_boardId(boardData.boardId);
+            setPostObject_title(boardData.title);
+            setPostObject_name(boardData.name);
+            setPostObject_content(boardData.content);
+            setPostObject_representImage(boardData.representImage);
+            setPostObject_view(boardData.view);
+            setPostObject_bookmarkCount(boardData.bookmarkCount);
+            setPostObject_createdAt(boardData.createdAt);
+            setPostObject_modifiedAt(boardData.modifiedAt);
+            setPostObject_images_idx(boardData.images.map((image: { imageId: number; }) => image.imageId));
+            setPostObject_images_addr(boardData.images.map((image: { imageAddress: string; }) => image.imageAddress));
+            setPostObject_info(boardData.info);
+            setPostObject_contractId(boardData.contractId);
+            setPostObject_isWriter(boardData.isWriter);
+            setPostObject_isBookmark(boardData.isBookmark);
+    
         } catch (error) {
-
+            // Handle error
+            console.error('Error fetching board data:', error);
         }
     };
 
@@ -87,32 +81,11 @@ const Postedit = () => {
     //png 파일을 서버에 보내고 주소를 받는 코드
     const [images, setImages] = useState<string[]>([]);
     const handlePngToUrl = async () => {
-        if (selectedImages.length === 0) {
-            return;
-        }
-        
         try {
-            const formData = new FormData();
-            const lastIndex = selectedImages.length - 1; 
-            formData.append('image', selectedImages[lastIndex], 'image.png'); // 마지막 이미지만 추가
-            console.log(formData)
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/images`,
-                formData,
-                {
-                    headers: {
-                        'Authorization': access_token,
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
-            );
-            // 서버 응답 처리 코드
-            if (response.status == 201){
-                setImages(prevImages => [...prevImages, response.data.address]);
-            }
-
+            const newImages : any = await uploadImages(selectedImages, access_token);
+            setImages((prevImages) => [...prevImages, ...newImages]);
         } catch (error) {
-            // 에러 처리 코드
-            console.error('Error uploading images:', error);
+            // 에러 처리
         }
     };
 
@@ -133,30 +106,13 @@ const Postedit = () => {
         setContent(event.target.value)
     };
 
-    const handleBoardEdit = async (event : any) => {
+    const handleBoardEdit = async (event: any) => {
         event.preventDefault();
-        console.log(images)
         try {
-            const response = await axios.patch(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/boards/${boardId}`, {
-                title: title,
-                content : content,
-                info : "부산 남구 대연동 부경대학교",
-                representImage : images[0],
-                contractId : 6,
-                deleteImageIds : removeImg,
-                addImageAddresses : images,
-            }, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            if (response.status === 201) {
-                console.log("옴")
-            }
-
+            await editBoard(boardId, title, content, images, removeImg, access_token);
+            // 성공 처리
         } catch (error) {
-
+            // 에러 처리
         }
     };
 
