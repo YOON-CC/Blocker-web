@@ -10,7 +10,19 @@ import axios from 'axios';
 import Link from "next/link";
 import Swal from 'sweetalert2';
 import Chatting from '@/app/chatting';
-
+import {
+    getContractData,
+    getProceedContractData,
+    getConcludeContractData,
+    getCancelingContractData,
+    getCanceledContractData,
+    searchUser,
+    proceedContract,
+    signContract,
+    registerCancelSign,
+    deleteContract,
+    deleteAllRelatedBoards,
+} from '@/api/contractObject';
 
 interface Paticipation {
     contractor: string;
@@ -19,9 +31,9 @@ interface Paticipation {
 
 const Contracts_object = () => {
 
-    const access_token = localStorage.getItem('access-token');
-    const contractId = localStorage.getItem('contractId');
-    const contractType = localStorage.getItem('state');
+    const access_token : any = localStorage.getItem('access-token');
+    const contractId : any = localStorage.getItem('contractId');
+    const contractType : any = localStorage.getItem('state');
 
     const [contractObject_contractId, setContractObject_contractId] = useState(0); 
     const [contractObject_title, setContractObject_title] = useState(''); 
@@ -49,127 +61,76 @@ const Contracts_object = () => {
 
 
     //해당 index에 따른 미체결 계약서 내용 가져오는 api
+
     const handleContarctObject_1 = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/not-proceed/${contractId}`, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-
-            if (response.status === 200) {
-                setContractObject_contractId(response.data.contractId);
-                setContractObject_title(response.data.title);
-                setContractObject_content(response.data.content);
-                setContractObject_createdAt(response.data.createdAt);
-                setContractObject_modifiedAt(response.data.modifiedAt);
-            }
-
+            const contractData = await getContractData(contractId, access_token);
+            setContractObject_contractId(contractData.contractId);
+            setContractObject_title(contractData.title);
+            setContractObject_content(contractData.content);
+            setContractObject_createdAt(contractData.createdAt);
+            setContractObject_modifiedAt(contractData.modifiedAt);
         } catch (error) {
-
+            // Handle error
         }
     };
 
     //해당 index에 따른 진행중 계약서 내용 가져오는 api
     const handleContarctObject_2 = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/proceed/${contractId}`, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-
-            if (response.status === 200) {
-                setContractObject_contractId(response.data.contractId);
-                setContractObject_title(response.data.title);
-                setContractObject_content(response.data.content);
-                setContractObject_createdAt(response.data.createdAt);
-                setContractObject_modifiedAt(response.data.modifiedAt);
-                setContractObject_participation(response.data.contractorAndSignStates);
-            }
-
+            const contractData = await getProceedContractData(contractId, access_token);
+            setContractObject_contractId(contractData.contractId);
+            setContractObject_title(contractData.title);
+            setContractObject_content(contractData.content);
+            setContractObject_createdAt(contractData.createdAt);
+            setContractObject_modifiedAt(contractData.modifiedAt);
+            setContractObject_participation(contractData.contractorAndSignStates);
         } catch (error) {
-
+            // Handle error
         }
     };
+
     const handleContarctObject_3 = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/conclude/${contractId}`, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-
-            if (response.status === 200) {
-                setContractObject_contractId(response.data.contractId);
-                setContractObject_title(response.data.title);
-                setContractObject_content(response.data.content);
-                setContractObject_createdAt(response.data.createdAt);
-                setContractObject_modifiedAt(response.data.modifiedAt);
-                // //여기에 참여여부
-            }
-
+            const contractData = await getConcludeContractData(contractId, access_token);
+            setContractObject_contractId(contractData.contractId);
+            setContractObject_title(contractData.title);
+            setContractObject_content(contractData.content);
+            setContractObject_createdAt(contractData.createdAt);
+            setContractObject_modifiedAt(contractData.modifiedAt);
         } catch (error) {
-
+            // Handle error
         }
     };
+
     const handleContarctObject_4 = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-contracts/canceling/${contractId}`, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-
-            if (response.status === 200) {
-                setContractObject_contractId(response.data.contractId);
-                setContractObject_title(response.data.title);
-                setContractObject_content(response.data.content);
-                setContractObject_createdAt(response.data.createdAt);
-                setContractObject_modifiedAt(response.data.modifiedAt);
-                setContractObject_destroy_participation(response.data.contractorAndSignStates)
-            }
-
+            const contractData = await getCancelingContractData(contractId, access_token);
+            setContractObject_contractId(contractData.contractId);
+            setContractObject_title(contractData.title);
+            setContractObject_content(contractData.content);
+            setContractObject_createdAt(contractData.createdAt);
+            setContractObject_modifiedAt(contractData.modifiedAt);
+            setContractObject_destroy_participation(contractData.contractorAndSignStates)
         } catch (error) {
-
+            // Handle error
         }
     };
+
+
     const handleContarctObject_5 = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-contracts/canceled/${contractId}`, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-
-            if (response.status === 200) {
-                setContractObject_contractId(response.data.contractId);
-                setContractObject_title(response.data.title);
-                setContractObject_content(response.data.content);
-                setContractObject_createdAt(response.data.createdAt);
-                setContractObject_modifiedAt(response.data.modifiedAt);
-            }
-
+            const contractData = await getCanceledContractData(contractId, access_token);
+            setContractObject_contractId(contractData.contractId);
+            setContractObject_title(contractData.title);
+            setContractObject_content(contractData.content);
+            setContractObject_createdAt(contractData.createdAt);
+            setContractObject_modifiedAt(contractData.modifiedAt);
         } catch (error) {
-
+            // Handle error
         }
     };
-    console.log(contractType,"입니다.", contractId, "입니다.")
+
     useEffect(() => {
         if (contractType === 'NOT_PROCEED'){
             handleContarctObject_1();
@@ -193,39 +154,19 @@ const Contracts_object = () => {
     //모든 계약서 관련 게시글 삭제
     const handleContractDeleteAll = async () => {
         try {
-            const response = await axios.delete(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/with-boards/${contractId}`, // 경로 변수 사용
-                {
-                    headers: {
-                        Authorization: access_token,
-                    },
-                }
-            );
-            //관련된 게시글이 없음
-            if (response.status === 200) {
-                console.log("삭제됨")
-            }//관련된 게시글이 존재
+            const response = await deleteAllRelatedBoards(contractId, access_token);
+            // 처리할 로직 추가
         } catch (error) {
-
+            // 에러 처리
         }
-    }
+    };
+
     //계약서 삭제
     const handleContractDelete = async (event : any) => {
         event.preventDefault();
         try {
-            const response = await axios.delete(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/${contractId}`, // 경로 변수 사용
-                {
-                    headers: {
-                        Authorization: access_token,
-                    },
-                }
-            );
-            //관련된 게시글이 없음
-            if (response.status === 200) {
-                console.log("삭제됨")
-            }//관련된 게시글이 존재
-            else if(response.status == 400){
-
-            }
+            const response = await deleteContract(contractId, access_token);
+            // 처리할 로직 추가
         } catch (error) {
             Swal.fire({
 
@@ -250,156 +191,75 @@ const Contracts_object = () => {
         }
     }
 
+
     //유저검색 input 변화
     const handleSearchUserChange = (event : any) => {
         setSearchUserContent(event.target.value)
     };
 
     //유저 찾기
-    const handleSearchUser = async (event : any) => {
+    const handleSearchUser = async (event: any) => {
         event.preventDefault();
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/users/search`, {
-                params: {
-                    keyword: searchUserContent,
-                },
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            
-            if (response.status === 200) {
-                const updatedEmailList = [...searchUserContentEmail, response.data[0].email];
-                setSearchUserContentEmail(updatedEmailList);
-
-                console.log(updatedEmailList)
-            }
+            const response = await searchUser(searchUserContent, access_token);
+            // 처리할 로직 추가
         } catch (error) {
-
+            // 에러 처리
         }
-    }
+    };
  
     //계약 진행하기 버튼
-    const handleContractToProceed = async (event : any) => {
+    const handleContractToProceed = async (event: any) => {
         event.preventDefault();
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/agreement-signs`, {
-                contractId: contractId,
-                contractors : searchUserContentEmail,
-            }, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            if (response.status === 201) {
-                console.log("생성완료")
-            }
-
+            const response = await proceedContract(contractId, searchUserContentEmail, access_token);
+            // 처리할 로직 추가
         } catch (error) {
-
+            // 에러 처리
         }
-    }
+    };
 
     //진행중 전자서명
-    const handleContractSign1 = async (event : any) => {
+    const handleContractSign1 = async (event: any) => {
         try {
-            const response = await axios.patch(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/agreement-signs/contract/${contractId}`, {
-
-            }, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            if (response.status === 200) {
-                console.log("옴")
-            }
-
+            const response = await signContract(contractId, access_token);
+            // 처리할 로직 추가
         } catch (error) {
-
+            // 에러 처리
         }
-    }
+    };
 
     //전자서명 등록
-    const handleContractSign2 = async (event : any) => {
+    const handleContractSign2 = async (event: any) => {
         try {
-            const response = await axios.patch(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-signs/cancel-contract/${contractId}`, {
-
-            }, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            if (response.status === 200) {
-                console.log("옴")
-            }
-
+            const response = await registerCancelSign(contractId, access_token);
+            // 처리할 로직 추가
         } catch (error) {
-
+            // 에러 처리
         }
-    }
+    };
     
 
     //진행중 계약서 삭제
-    const handleContractDestruction = async (event : any) => {
+    const handleContractDestruction = async (event: any) => {
         event.preventDefault();
         try {
-            const response = await axios.delete(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/agreement-signs/contract/${contractId}`, // 경로 변수 사용
-                {
-                    headers: {
-                        Authorization: access_token,
-                    },
-                }
-            );
-            if (response.status === 200) {
-                console.log("삭제됨")
-            }
+            const response = await deleteContract(contractId, access_token);
+            // 처리할 로직 추가
         } catch (error) {
-            // 에러 처리 코드 추가
+            // 에러 처리
         }
-    }
+    };
+
 
     //파기계약서 작성
     const handleContractToCanceling = async (event: any) => {
         event.preventDefault();
         try {
-            const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-signs/contract/${contractId}`,{
-
-                },
-                {
-                    headers: {
-                        'Authorization': access_token,
-                    },
-                }
-            );
-            console.log(response.status);
+            const response = await registerCancelSign(contractId, access_token);
+            // 처리할 로직 추가
         } catch (error) {
-            // 오류 처리 
-        }
-    };
-
-    //파기계약서 작성
-    const handleCancelingContract = async (event: any) => {
-        event.preventDefault();
-        try {
-            const response = await axios.patch(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/agreement-signs/contract/${contractId}`, {
-
-            }, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            if (response.status === 200) {
-                console.log("옴")
-            }
-
-        } catch (error) {
-
+            // 에러 처리
         }
     };
 
@@ -468,9 +328,6 @@ const Contracts_object = () => {
             {/* 파기계약서 */}
             {contractType === 'CANCELING' && (
                 <Container_btn_container>
-                    <form onSubmit={handleCancelingContract}>
-                        <Container_btn_container_b3>삭제</Container_btn_container_b3>
-                    </form>
                     <Container_participation_list>
                     {contractObject_destroy_participation.map((item, index) => (
                         <Container_participation_list_container key={index}>

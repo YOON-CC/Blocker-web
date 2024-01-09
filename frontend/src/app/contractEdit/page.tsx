@@ -6,39 +6,26 @@ import styled from 'styled-components';
 import Header from '@/components/Header';
 import axios from 'axios';
 import Link from "next/link";
+import { getContractData, editContract } from '@/api/constractEdit';
 
 
 const Contract_edit= () => {
 
-    const access_token = localStorage.getItem('access-token');
-    const contractId = localStorage.getItem('contractId_1');
+    const access_token : any = localStorage.getItem('access-token');
+    const contractId : any = localStorage.getItem('contractId_1');
     const [contractObject_contractId, setContractObject_contractId] = useState(0); 
     const [contractObject_title, setContractObject_title] = useState(''); 
     const [contractObject_content, setContractObject_content] = useState(''); 
 
     const handleContarctObject_1 = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/${contractId}`, {
-                params: {
-                    state: "NOT_CONCLUDED",
-                },
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-            if (response.status === 200) {
-                setContractObject_contractId(response.data.contractId);
-                setContractObject_title(response.data.title);
-                setContractObject_content(response.data.content);
-            }
-
+            const contractData = await getContractData(contractId, access_token);
+            setContractObject_contractId(contractData.contractId);
+            setContractObject_title(contractData.title);
+            setContractObject_content(contractData.content);
         } catch (error) {
-
+            // Handle error
         }
-
     };
 
     useEffect(() => {
@@ -56,25 +43,13 @@ const Contract_edit= () => {
         setContent(event.target.value)
     };
 
-    const handleContractEdit = async (event : any) => {
+    const handleContractEdit = async (event: any) => {
         event.preventDefault();
-
         try {
-            const response = await axios.patch(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/${contractId}`, {
-                title: title,
-                content : content,
-            }, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            if (response.status === 200) {
-                console.log("수정완료")
-            }
-
+            await editContract(contractId, title, content, access_token);
+            // Handle success
         } catch (error) {
-
+            // Handle error
         }
     };
 
