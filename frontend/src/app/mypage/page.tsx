@@ -7,7 +7,7 @@ import axios from 'axios';
 
 import Link from "next/link";
 import appStore from '@/store/appStore';
-
+import Chatting from '@/app/chatting';
 
 interface BoardItem1 {
     boardId: number;
@@ -35,7 +35,7 @@ const Contracts_object = () => {
     const handleBoardList_1 = async () => {
         
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/boards`, {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/bookmarks/boards`, {
                 params: {
                     size: 8,
                     page: 0,
@@ -110,6 +110,7 @@ const Contracts_object = () => {
     return (
         <div>
             <Header></Header>
+            <Chatting></Chatting>
             <Container>
                 <Container_1>
                     <Container_1_title>내가 찜한 게시글</Container_1_title>

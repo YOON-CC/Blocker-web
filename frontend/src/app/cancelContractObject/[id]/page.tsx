@@ -17,10 +17,11 @@ interface Paticipation {
     signState: string;
 }
 
-const Contracts_object = () => {
+const Cancel_Contracts_object = () => {
 
     const access_token = localStorage.getItem('access-token');
     const contractId = localStorage.getItem('contractId');
+    console.log("파기계약서", contractId)
     const contractType = localStorage.getItem('state');
 
     const [contractObject_contractId, setContractObject_contractId] = useState(0); 
@@ -47,81 +48,6 @@ const Contracts_object = () => {
     const [searchUserContentEmail, setSearchUserContentEmail] = useState<string[]>([]);
     const [searchUserContentName, setSearchUserContentName] = useState(''); 
 
-
-    //해당 index에 따른 미체결 계약서 내용 가져오는 api
-    const handleContarctObject_1 = async () => {
-
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/not-proceed/${contractId}`, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-
-            if (response.status === 200) {
-                setContractObject_contractId(response.data.contractId);
-                setContractObject_title(response.data.title);
-                setContractObject_content(response.data.content);
-                setContractObject_createdAt(response.data.createdAt);
-                setContractObject_modifiedAt(response.data.modifiedAt);
-            }
-
-        } catch (error) {
-
-        }
-    };
-
-    //해당 index에 따른 진행중 계약서 내용 가져오는 api
-    const handleContarctObject_2 = async () => {
-
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/proceed/${contractId}`, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-
-            if (response.status === 200) {
-                setContractObject_contractId(response.data.contractId);
-                setContractObject_title(response.data.title);
-                setContractObject_content(response.data.content);
-                setContractObject_createdAt(response.data.createdAt);
-                setContractObject_modifiedAt(response.data.modifiedAt);
-                setContractObject_participation(response.data.contractorAndSignStates);
-            }
-
-        } catch (error) {
-
-        }
-    };
-    const handleContarctObject_3 = async () => {
-
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/conclude/${contractId}`, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-
-            if (response.status === 200) {
-                setContractObject_contractId(response.data.contractId);
-                setContractObject_title(response.data.title);
-                setContractObject_content(response.data.content);
-                setContractObject_createdAt(response.data.createdAt);
-                setContractObject_modifiedAt(response.data.modifiedAt);
-                // //여기에 참여여부
-            }
-
-        } catch (error) {
-
-        }
-    };
     const handleContarctObject_4 = async () => {
 
         try {
@@ -171,16 +97,7 @@ const Contracts_object = () => {
     };
     console.log(contractType,"입니다.", contractId, "입니다.")
     useEffect(() => {
-        if (contractType === 'NOT_PROCEED'){
-            handleContarctObject_1();
-        }
-        else if (contractType === 'PROCEED'){
-            handleContarctObject_2();
-        }
-        else if (contractType === 'CONCLUDE'){
-            handleContarctObject_3();
-        }
-        else if (contractType === 'CANCELING'){
+        if (contractType === 'CANCELING'){
             handleContarctObject_4();
         }
         else if (contractType === 'CANCELED'){
@@ -190,65 +107,7 @@ const Contracts_object = () => {
 
     }, []);
 
-    //모든 계약서 관련 게시글 삭제
-    const handleContractDeleteAll = async () => {
-        try {
-            const response = await axios.delete(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/with-boards/${contractId}`, // 경로 변수 사용
-                {
-                    headers: {
-                        Authorization: access_token,
-                    },
-                }
-            );
-            //관련된 게시글이 없음
-            if (response.status === 200) {
-                console.log("삭제됨")
-            }//관련된 게시글이 존재
-        } catch (error) {
 
-        }
-    }
-    //계약서 삭제
-    const handleContractDelete = async (event : any) => {
-        event.preventDefault();
-        try {
-            const response = await axios.delete(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts/${contractId}`, // 경로 변수 사용
-                {
-                    headers: {
-                        Authorization: access_token,
-                    },
-                }
-            );
-            //관련된 게시글이 없음
-            if (response.status === 200) {
-                console.log("삭제됨")
-            }//관련된 게시글이 존재
-            else if(response.status == 400){
-
-            }
-        } catch (error) {
-            Swal.fire({
-
-                text: '계약서와 관련된 게시글이 모두 삭제됩니다.',
-                icon: 'warning',
-                
-                showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-                confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
-                cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
-                confirmButtonText: '승인', // confirm 버튼 텍스트 지정
-                cancelButtonText: '취소', // cancel 버튼 텍스트 지정
-                
-                reverseButtons: true, // 버튼 순서 거꾸로
-                
-            }).then(result => {
-                // 만약 Promise리턴을 받으면,
-                if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
-                
-                    handleContractDeleteAll()
-                }
-            });
-        }
-    }
 
     //유저검색 input 변화
     const handleSearchUserChange = (event : any) => {
@@ -343,45 +202,6 @@ const Contracts_object = () => {
     }
     
 
-    //진행중 계약서 삭제
-    const handleContractDestruction = async (event : any) => {
-        event.preventDefault();
-        try {
-            const response = await axios.delete(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/agreement-signs/contract/${contractId}`, // 경로 변수 사용
-                {
-                    headers: {
-                        Authorization: access_token,
-                    },
-                }
-            );
-            if (response.status === 200) {
-                console.log("삭제됨")
-            }
-        } catch (error) {
-            // 에러 처리 코드 추가
-        }
-    }
-
-    //파기계약서 작성
-    const handleContractToCanceling = async (event: any) => {
-        event.preventDefault();
-        try {
-            const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-signs/contract/${contractId}`,{
-
-                },
-                {
-                    headers: {
-                        'Authorization': access_token,
-                    },
-                }
-            );
-            console.log(response.status);
-        } catch (error) {
-            // 오류 처리 
-        }
-    };
-
     //파기계약서 작성
     const handleCancelingContract = async (event: any) => {
         event.preventDefault();
@@ -424,47 +244,7 @@ const Contracts_object = () => {
                     <Container_4_content>{contractObject_content}</Container_4_content>
                 </Container_4>
             </Container>
-            {contractType === 'NOT_PROCEED' && (
-                <Container_btn_container>
-                    <Container_btn_container_b1>취소</Container_btn_container_b1>
-                    <Link href='/contractEdit' style={{ textDecoration: 'none' }} onClick={() => localStorage.setItem("contractId", contractObject_contractId.toString())}>
-                        <Container_btn_container_b2>편집</Container_btn_container_b2>
-                    </Link>
-                    <form onSubmit={handleContractDelete}>
-                        <Container_btn_container_b3>삭제</Container_btn_container_b3>
-                    </form>
-                    <Container_btn_container_b4 onClick={() => setContractSearchModal(!contractSearchModal)}>계약참여자 검색</Container_btn_container_b4>
-                </Container_btn_container>
-            )}
-            {contractType === 'PROCEED' && (
-                <Container_btn_container>
-                    <form onSubmit={handleContractDestruction}>
-                        <Container_btn_container_b3>삭제</Container_btn_container_b3>
-                    </form>
-                    <Container_participation_list>
-                    {contractObject_participation.map((item, index) => (
-                        <Container_participation_list_container key={index}>
-                            <Container_participation_list_container_name style={{ background: item.signState === 'Y' ? 'lime' : '#f1f1f1' }}>
-                                {item.contractor}
-                             </Container_participation_list_container_name>
-                            <Container_participation_list_container_state style={{ background: item.signState === 'Y' ? 'lime' : '#f1f1f1' }}>
-                                {item.signState}
-                            </Container_participation_list_container_state>
-                        </Container_participation_list_container>
-                    ))}
-                    </Container_participation_list>
-                    <form onSubmit={handleContractSign1}>
-                        <Container_btn_container_b5>전자서명 등록</Container_btn_container_b5>
-                    </form>
-                </Container_btn_container>
-            )}
-            {contractType === 'CONCLUDE' && (
-                <Container_btn_container>
-                    <form onSubmit={handleContractToCanceling}>
-                        <Container_3_contract_write_btn>파기 계약서 작성</Container_3_contract_write_btn>
-                    </form>
-                </Container_btn_container>
-            )}
+
             {/* 파기계약서 */}
             {contractType === 'CANCELING' && (
                 <Container_btn_container>
@@ -488,34 +268,7 @@ const Contracts_object = () => {
                     </form>
                 </Container_btn_container>
             )}
-
-            {contractSearchModal && (
-                <Container_search_user>
-                    <Container_search_user_frame>
-                        <Container_search_user_frame_1>
-                            <Container_search_user_frame_1_input onChange={handleSearchUserChange}></Container_search_user_frame_1_input>
-                            <form onSubmit={handleSearchUser}>
-                                <Container_search_user_frame_1_btn>🔗</Container_search_user_frame_1_btn>
-                            </form>
-                        </Container_search_user_frame_1>
-
-
-                        <Container_search_user_frame_2>
-                            {searchUserContentEmail.map((item, index) => (
-                                <Container_search_user_frame_2_container key={index}>{item}</Container_search_user_frame_2_container>
-                            ))}
-                        </Container_search_user_frame_2>
-
-
-                        <Container_search_user_frame_3>
-                            <Container_search_user_frame_3_b1 onClick={() => setContractSearchModal(!contractSearchModal)}>취소</Container_search_user_frame_3_b1>
-                            <form onSubmit={handleContractToProceed}>
-                                <Container_search_user_frame_3_b2>진행</Container_search_user_frame_3_b2>
-                            </form>
-                        </Container_search_user_frame_3>
-                    </Container_search_user_frame>
-                </Container_search_user>
-            )}
+            
         </div>
     );
 };
@@ -935,4 +688,4 @@ const Container_3_contract_write_btn = styled.button`
 
 
 
-export default Contracts_object;
+export default Cancel_Contracts_object;

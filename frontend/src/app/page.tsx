@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import Header from '@/components/Header';
 import Chatting from './chatting';
 // import appStore from '../store/appStore';
-import { Element, animateScroll as scroll } from 'react-scroll'; 
 import appStore from '@/store/appStore';
 
 const Main: React.FC = () => {

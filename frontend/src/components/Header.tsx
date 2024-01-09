@@ -81,11 +81,7 @@ const Header = () => {
                 </Link>
 
                 {/* </StyledLink> */}
-                {/* <StyledLink to="/vertification" style={{ textDecoration: 'none' }}> */}
-                    <Container_menu_item>
-                        검증
-                    </Container_menu_item>
-                {/* </StyledLink> */}
+
             </Container_menu>
             <Container_login>
                 <Container_login_btn  onClick={toggleDropdown}>

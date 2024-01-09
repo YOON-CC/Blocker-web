@@ -8,9 +8,11 @@ import Header from '@/components/Header';
 // import Footer from '../components/footer';
 import axios from 'axios';
 import Link from "next/link";
+import Chatting from '@/app/chatting';
 
 interface ContractItem {
     contractId: number;
+    cancelContractId : number;
     title : number;
     content : string;
     createdAt : string;
@@ -44,7 +46,7 @@ const Contracts = () => {
 
             console.log(response.data)
             if (response.status === 200) {
-                console.log("옴")
+                console.log("옴, 미체결")
                 setContractData_1(response.data);
             }
 
@@ -114,6 +116,7 @@ const Contracts = () => {
             });
 
             console.log(response.data)
+            console.log("파기 진행중", response.data)
             if (response.status === 200) {
                 console.log("파기 진행중", response.data)
                 setContractData_4(response.data);
@@ -139,7 +142,7 @@ const Contracts = () => {
             console.log(response.data)
             if (response.status === 200) {
                 console.log("파기 진행중", response.data)
-                setContractData_4(response.data);
+                setContractData_5(response.data);
             }
 
         } catch (error) {
@@ -158,6 +161,7 @@ const Contracts = () => {
     return (
         <div>
             <Header />
+            <Chatting></Chatting>
             <Banner_img src="../image/contract_banner_img.png" alt="대체 이미지"/>
             <Container_3_contract_write>
                 {/* <StyledLink to="/contractwrite" style={{ textDecoration: 'none' }}> */}
@@ -190,6 +194,7 @@ const Contracts = () => {
                                         <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
                                         <Container_2_contarcts_1_content>{item.content}</Container_2_contarcts_1_content>
                                         <Container_2_contarcts_1_info>
+                                            <Container_2_contarcts_1_info_content_id>번호 : {item.contractId}</Container_2_contarcts_1_info_content_id>
                                             <Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Container_2_contarcts_1_info_content>
                                             <Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Container_2_contarcts_1_info_content>
                                         </Container_2_contarcts_1_info>                            
@@ -273,9 +278,9 @@ const Contracts = () => {
                         <Container_2_contract_line></Container_2_contract_line>
 
                         <Container_2_contarcts_container>
-                            {contractData_1.map((item, index) => (
-                                <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
-                                    {localStorage.setItem("contractId", item.contractId.toString());
+                            {contractData_4.map((item, index) => (
+                                <Link href={`/cancelContractObject/${item.cancelContractId}`} style={{ textDecoration: 'none' }} onClick={() => 
+                                    {localStorage.setItem("contractId", item.cancelContractId.toString());
                                     localStorage.setItem("state", "CANCELING");}} key={index}>
                                     <Container_2_contarcts_1>
                                         <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
@@ -300,9 +305,9 @@ const Contracts = () => {
                         <Container_2_contract_line></Container_2_contract_line>
 
                         <Container_2_contarcts_container>
-                            {contractData_1.map((item, index) => (
-                                <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
-                                    {localStorage.setItem("contractId", item.contractId.toString());
+                            {contractData_5.map((item, index) => (
+                                <Link href={`/cancelContractObject/${item.cancelContractId}`} style={{ textDecoration: 'none' }} onClick={() => 
+                                    {localStorage.setItem("contractId", item.cancelContractId.toString());
                                     localStorage.setItem("state", "CANCELED");}} key={index}>
                                     <Container_2_contarcts_1>
                                         <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
@@ -504,6 +509,15 @@ const Container_2_contarcts_1_info = styled.div`
     display : flex;
     justify-content : center;
 
+`;
+const Container_2_contarcts_1_info_content_id = styled.div`
+    // background : blue;
+    height: 100%;
+    width: 80px;
+    display : flex;
+    justify-content : center;
+    align-items : center;
+    font-size : 12px;
 `;
 const Container_2_contarcts_1_info_content = styled.div`
     // background : blue;

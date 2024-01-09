@@ -187,6 +187,7 @@ const ListContainer = styled.div`
   &::-webkit-scrollbar-thumb {
     background-color: white;
   }
+  z-index: 999;
 `;
 
 const ListContainerFrame = styled.div`
@@ -201,6 +202,7 @@ const ListContainerFrame = styled.div`
   &:hover {
     filter: brightness(0.9);
   }
+  z-index: 999;
 `;
 const ListContainerFrame1 = styled.div`
   position : relative;
@@ -212,6 +214,7 @@ const ListContainerFrame1 = styled.div`
   justify-content : center;
   align-items: center;
   background : #435DF1;
+  z-index: 999;
 `;
 const ListContainerFrame2 = styled.div`
   // background : red;
@@ -258,6 +261,7 @@ const ChattingObjectContainer = styled.div`
   cursor: pointer;
   border-radius: 5px;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
+  z-index: 999;
 `;
 
 const ChattingObjectFrame = styled.div`
@@ -280,6 +284,7 @@ const ChattingObjectFrame = styled.div`
   &::-webkit-scrollbar-thumb {
     background-color: #e3e3e3;
   }
+  z-index: 999;
 `;
 const ChattingMessageObject = styled.div`
   & > div {
@@ -289,6 +294,7 @@ const ChattingMessageObject = styled.div`
     padding : 5px;
     border-radius : 5px;
     color : white;
+    z-index: 999;
   }
 `
 const ChattingOjbectMessageFrame = styled.div`
@@ -297,7 +303,7 @@ const ChattingOjbectMessageFrame = styled.div`
   height : 35px;
   margin-top : 5px;
   display : flex;
-
+  z-index: 999;
 `
 const ChattingInput = styled.input`
   position : relative;
@@ -310,6 +316,7 @@ const ChattingInput = styled.input`
   border : none;
   padding-left : 5px;
   color : white;
+  z-index: 999;
 `;
 const ChattingButton = styled.button`
   background : none;

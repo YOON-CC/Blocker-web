@@ -7,6 +7,7 @@ import Banner from '@/components/Banner';
 import axios from 'axios';
 import Link from "next/link";
 import Login from '../Login';
+import Chatting from '@/app/chatting';
 
 
 interface BoardItem {
@@ -73,6 +74,7 @@ const Board = () => {
             <Container>
                 <Header></Header>
                 <Banner></Banner>
+                <Chatting></Chatting>
                 <Board_title>Board list</Board_title>
                 <Container_board_frame>
                     {boardData.map((item, index) => (

@@ -61,10 +61,20 @@ const Postwrite = () => {
 
     // 전체 데이터 전송 코드
     const [title, setTitle] = useState('');
+    const [location, setLocation] = useState('');
+    const [selectContract, setSelectContract] = useState('');
     const [content, setContent] = useState('');
 
     const handletitleChange = (event : any) => {
         setTitle(event.target.value)
+    };
+
+    const handlelocationChange = (event : any) => {
+        setLocation(event.target.value)
+    };
+    
+    const handleSelectContract = (event : any) => {
+        setSelectContract(event.target.value)
     };
 
     const handlecontentChange = (event : any) => {
@@ -78,9 +88,9 @@ const Postwrite = () => {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/boards`, {
                 title: title,
                 content : content,
-                info : "부산 남구 대연동 부경대학교",
+                info : location,
                 representImage : images[0],
-                contractId : 6,
+                contractId : selectContract,
                 images : images,
             }, {
                 headers: {
@@ -113,8 +123,8 @@ const Postwrite = () => {
                     <Container_img_select_btn type="file" accept="image/png" multiple onChange={handleImageChange} id="upload"></Container_img_select_btn>
                 </Container_img_select>
                 <Container_info_container>
-                    <Container_info_container_select_location>위치검색</Container_info_container_select_location>
-                    <Container_info_container_select_contract>미체결 계약서 선택</Container_info_container_select_contract>
+                    <Container_info_container_select_location  placeholder='위치를 입력해주세요.' onChange={handlelocationChange}></Container_info_container_select_location>
+                    <Container_info_container_select_contract placeholder='계약서 번호를 입력해주세요' onChange={handleSelectContract}></Container_info_container_select_contract>
                 </Container_info_container>
                 <Container_content placeholder='내용을 작성해주세요.' onChange={handlecontentChange}></Container_content>
                 <form onSubmit={handleBoardPost}>
@@ -248,31 +258,23 @@ const Container_info_container = styled.div`
     border-radius : 3px;
 
 `;
-const Container_info_container_select_location = styled.div`
+const Container_info_container_select_location = styled.input`
     height:100%;
     width: 300px;
 
     display : flex;
     justify-content:center;
     align-items: center;
-
-    &:hover {
-        background-color : rgba(0, 0, 0, 0.1);
-        cursor : pointer;
-    }
+    outline : none;
 `;
-const Container_info_container_select_contract = styled.div`
+const Container_info_container_select_contract = styled.input`
     height:100%;
     width: 300px;
 
     display : flex;
     justify-content:center;
     align-items: center;
-
-    &:hover {
-        background-color : rgba(0, 0, 0, 0.1);
-        cursor : pointer;
-    }
+    outline : none;
 `;
 const Container_content = styled.textarea`
     height: 150px;
