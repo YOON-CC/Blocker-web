@@ -8,6 +8,7 @@ import axios from 'axios';
 import Link from "next/link";
 import appStore from '@/store/appStore';
 import Chatting from '@/app/chatting';
+import { getBoardList1, getBoardList2, getSignatures } from '@/api/mypage';
 
 interface BoardItem1 {
     boardId: number;
@@ -32,76 +33,24 @@ const Contracts_object = () => {
     const [boardData_2, setBoardData_2] = useState<BoardItem2[]>([]);
     const [imageURL, setImageURL] = useState<string | null>(null); 
 
-    const handleBoardList_1 = async () => {
-        
+    const myPageData = async () => {
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/bookmarks/boards`, {
-                params: {
-                    size: 8,
-                    page: 0,
-                },
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-            console.log(response.data)
-            if (response.status === 200) {
-                console.log(response.data, "dd")
-                setBoardData_1(response.data);
-            }
+            const data1 = await getBoardList1(access_token);
+            setBoardData_1(data1);
+
+            const data2 = await getBoardList2(access_token);
+            setBoardData_2(data2);
+
+            const signatureURL = await getSignatures(access_token);
+            setImageURL(signatureURL);
         } catch (error) {
-
+            // 에러 처리
         }
-
-    };
-
-    const handleBoardList_2 = async () => {
-        
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/boards`, {
-                params: {
-                    size: 8,
-                    page: 0,
-                },
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-            console.log(response.data)
-            if (response.status === 200) {
-                console.log(response.data, "dd")
-                setBoardData_2(response.data);
-            }
-        } catch (error) {
-
-        }
-
-    };
-
-    
-    const handleSignatures = async () => {
-        
-        try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/signatures`, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-            console.log(response.data)
-            if (response.status === 200) {
-                setImageURL(response.data.address);
-            }
-        } catch (error) {
-
-        }
-
     };
 
     useEffect(() => {
         // 페이지가 로드될 때 한 번만 호출되는 로직
-        handleBoardList_1();
-        handleBoardList_2();
-        handleSignatures();
+        myPageData();
     }, []);
 
     const handleButtonClick = () => {

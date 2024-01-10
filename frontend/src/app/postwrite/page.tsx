@@ -5,6 +5,8 @@ import React, { useState, useEffect} from 'react';
 import styled from 'styled-components';
 import Header from '@/components/Header';
 import axios from 'axios';
+import { uploadImages, postBoard } from '@/api/postWrite';
+
 
 const Postwrite = () => {
     const access_token = localStorage.getItem('access-token');
@@ -24,34 +26,10 @@ const Postwrite = () => {
 
     //png 파일을 서버에 보내고 주소를 받는 코드
     const [images, setImages] = useState<string[]>([]);
-    const handlePngToUrl = async () => {
-        if (selectedImages.length === 0) {
-            return;
-        }
-        
-        try {
-            const formData = new FormData();
-            const lastIndex = selectedImages.length - 1; 
-            formData.append('image', selectedImages[lastIndex], 'image.png'); // 마지막 이미지만 추가
-            console.log(formData)
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/images`,
-                formData,
-                {
-                    headers: {
-                        'Authorization': access_token,
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
-            );
-            // 서버 응답 처리 코드
-            if (response.status == 201){
-                setImages(prevImages => [...prevImages, response.data.address]);
-            }
 
-        } catch (error) {
-            // 에러 처리 코드
-            console.error('Error uploading images:', error);
-        }
+    const handlePngToUrl = async () => {
+        const images = await uploadImages(selectedImages, access_token);
+        setImages(prevImages => [...prevImages, ...images]);
     };
 
     useEffect(() => {
@@ -81,29 +59,24 @@ const Postwrite = () => {
         setContent(event.target.value)
     };
 
-    const handleBoardPost = async (event : any) => {
+    const handleBoardPost = async (event: any) => {
         event.preventDefault();
-        console.log(images)
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/boards`, {
+            const success = await postBoard({
                 title: title,
-                content : content,
-                info : location,
-                representImage : images[0],
-                contractId : selectContract,
-                images : images,
-            }, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
+                content: content,
+                info: location,
+                representImage: images[0],
+                contractId: selectContract,
+                images: images,
+            }, access_token);
 
-            if (response.status === 201) {
-                console.log("옴")
+            if (success) {
+                console.log("옴");
             }
 
         } catch (error) {
-
+            // 에러 처리 코드
         }
     };
 

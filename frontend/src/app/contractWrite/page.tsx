@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import Header from '@/components/Header';
 import axios from 'axios';
 import Link from "next/link";
+import { postContract } from '@/api/contractWrite';
+
 
 const Contractwrite = () => {
 
@@ -22,24 +24,16 @@ const Contractwrite = () => {
         setContent(event.target.value)
     };
 
-    const handleContractPost = async (event : any) => {
+    const handleContractPost = async (event: any) => {
         event.preventDefault();
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts`, {
-                title: title,
-                content : content,
-            }, {
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
+            const success = await postContract(title, content, access_token);
 
-            if (response.status === 201) {
-                console.log("옴")
+            if (success) {
+                console.log("옴");
             }
-
         } catch (error) {
-
+            // 에러 처리
         }
     };
 

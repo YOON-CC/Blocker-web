@@ -9,6 +9,8 @@ import Header from '@/components/Header';
 import axios from 'axios';
 import Link from "next/link";
 import Chatting from '@/app/chatting';
+import { getContractsByState, getCancelContractsByState } from '@/api/constracts';
+
 
 interface ContractItem {
     contractId: number;
@@ -33,122 +35,54 @@ const Contracts = () => {
 
     //미체결 게약서 받아오기
     const handleContarctList_1 = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts`, {
-                params: {
-                    state: "NOT_PROCEED",
-                },
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-            if (response.status === 200) {
-                console.log("옴, 미체결")
-                setContractData_1(response.data);
-            }
-
+            const data = await getContractsByState("NOT_PROCEED", access_token);
+            setContractData_1(data);
         } catch (error) {
-
+            // 에러 처리
         }
     };
   
-    //
     //진행중 게약서 받아오기
     const handleContarctList_2 = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts`, {
-                params: {
-                    state: "PROCEED",
-                },
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-            if (response.status === 200) {
-                console.log("옴")
-                setContractData_2(response.data);
-            }
-
+            const data = await getContractsByState("PROCEED", access_token);
+            setContractData_2(data);
         } catch (error) {
-
+            // 에러 처리
         }
     };
+
     //체결 게약서 받아오기
     const handleContarctList_3 = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/contracts`, {
-                params: {
-                    state: "CONCLUDE",
-                },
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-            if (response.status === 200) {
-                // console.log("체결", response.data)
-                setContractData_3(response.data);
-            }
-
+            const data = await getContractsByState("CONCLUDE", access_token);
+            setContractData_3(data);
         } catch (error) {
-
+            // 에러 처리
         }
     };
+
     //파기 진행중 게약서 받아오기
     const handleContarctList_4 = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-contracts`, {
-                params: {
-                    state: "CANCELING",
-                },
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-            console.log("파기 진행중", response.data)
-            if (response.status === 200) {
-                console.log("파기 진행중", response.data)
-                setContractData_4(response.data);
-            }
-
+            const data = await getCancelContractsByState("CANCELING", access_token);
+            setContractData_4(data);
         } catch (error) {
-
+            // 에러 처리
         }
     };
+
     //파기 체결 게약서 받아오기
     const handleContarctList_5 = async () => {
-
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_REACT_APP_API_URL}/cancel-contracts`, {
-                params: {
-                    state: "CANCELED",
-                },
-                headers: {
-                    'Authorization': access_token,
-                }
-            });
-
-            console.log(response.data)
-            if (response.status === 200) {
-                console.log("파기 진행중", response.data)
-                setContractData_5(response.data);
-            }
-
+            const data = await getCancelContractsByState("CANCELED", access_token);
+            setContractData_5(data);
         } catch (error) {
-
+            // 에러 처리
         }
     };
+
     useEffect(() => {
         // 페이지가 로드될 때 한 번만 호출되는 로직
         handleContarctList_1();
