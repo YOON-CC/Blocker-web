@@ -10,6 +10,7 @@ import axios from 'axios';
 import Link from "next/link";
 import Chatting from '@/app/chatting';
 import { getContractsByState, getCancelContractsByState } from '@/api/constracts';
+import * as Styled from '@/styles/contracts.styles'
 
 
 interface ContractItem {
@@ -96,460 +97,172 @@ const Contracts = () => {
         <div>
             <Header />
             <Chatting></Chatting>
-            <Banner_img src="../image/contract_banner_img.png" alt="대체 이미지"/>
-            <Container_3_contract_write>
+            <Styled.Banner_img src="../image/contract_banner_img.png" alt="대체 이미지"/>
+            <Styled.Container_3_contract_write>
                 {/* <StyledLink to="/contractwrite" style={{ textDecoration: 'none' }}> */}
                 <Link href="/contractWrite" style={{ textDecoration: 'none' }}>
-                    <Container_3_contract_write_btn>계약서 작성</Container_3_contract_write_btn>
+                    <Styled.Container_3_contract_write_btn>계약서 작성</Styled.Container_3_contract_write_btn>
                 </Link>
                 {/* </StyledLink>     */}
-            </Container_3_contract_write>
-            <Container_title_1>
-                <Container_title_1_name>🔗나의 계약 현황</Container_title_1_name>
-            </Container_title_1>
-            <Container_2>
-                <Container_2_contract>
+            </Styled.Container_3_contract_write>
+            <Styled.Container_title_1>
+                <Styled.Container_title_1_name>🔗나의 계약 현황</Styled.Container_title_1_name>
+            </Styled.Container_title_1>
+            <Styled.Container_2>
+                <Styled.Container_2_contract>
                     {/* <StyledLink to={`/contracts/${boardId}`} style={{ textDecoration: 'none' }}> */}
-                    <Container_2_contract_1>
-                        <Container_2_contract_title_Container>
+                    <Styled.Container_2_contract_1>
+                        <Styled.Container_2_contract_title_Container>
                             <img src="./image/contracts_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
-                            <Container_2_contract_title_Container_content>
-                                <Container_2_contract_title_Container_content_1>미체결 계약서</Container_2_contract_title_Container_content_1>
-                            </Container_2_contract_title_Container_content>
-                        </Container_2_contract_title_Container>
-                        <Container_2_contract_line></Container_2_contract_line>
+                            <Styled.Container_2_contract_title_Container_content>
+                                <Styled.Container_2_contract_title_Container_content_1>미체결 계약서</Styled.Container_2_contract_title_Container_content_1>
+                            </Styled.Container_2_contract_title_Container_content>
+                        </Styled.Container_2_contract_title_Container>
+                        <Styled.Container_2_contract_line></Styled.Container_2_contract_line>
 
-                        <Container_2_contarcts_container>
+                        <Styled.Container_2_contarcts_container>
                             {contractData_1.map((item, index) => (
                                 <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
                                     {localStorage.setItem("contractId", item.contractId.toString());
                                     localStorage.setItem("state", "NOT_PROCEED");}} key={index}>
-                                    <Container_2_contarcts_1>
-                                        <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
-                                        <Container_2_contarcts_1_content>{item.content}</Container_2_contarcts_1_content>
-                                        <Container_2_contarcts_1_info>
-                                            <Container_2_contarcts_1_info_content_id>번호 : {item.contractId}</Container_2_contarcts_1_info_content_id>
-                                            <Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Container_2_contarcts_1_info_content>
-                                            <Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Container_2_contarcts_1_info_content>
-                                        </Container_2_contarcts_1_info>                            
-                                    </Container_2_contarcts_1>
+                                    <Styled.Container_2_contarcts_1>
+                                        <Styled.Container_2_contarcts_1_title>{item.title}</Styled.Container_2_contarcts_1_title>
+                                        <Styled.Container_2_contarcts_1_content>{item.content}</Styled.Container_2_contarcts_1_content>
+                                        <Styled.Container_2_contarcts_1_info>
+                                            <Styled.Container_2_contarcts_1_info_content_id>번호 : {item.contractId}</Styled.Container_2_contarcts_1_info_content_id>
+                                            <Styled.Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Styled.Container_2_contarcts_1_info_content>
+                                            <Styled.Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Styled.Container_2_contarcts_1_info_content>
+                                        </Styled.Container_2_contarcts_1_info>                            
+                                    </Styled.Container_2_contarcts_1>
                                 </Link>
                             ))}
-                        </Container_2_contarcts_container>
+                        </Styled.Container_2_contarcts_container>
 
-                    </Container_2_contract_1>
-                    <Container_2_contract_2> 
-                        <Container_2_contract_title_Container>
+                    </Styled.Container_2_contract_1>
+                    <Styled.Container_2_contract_2> 
+                        <Styled.Container_2_contract_title_Container>
                             <img src="./image/contracts_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
-                            <Container_2_contract_title_Container_content>
-                                <Container_2_contract_title_Container_content_1>진행중 계약서</Container_2_contract_title_Container_content_1>
-                            </Container_2_contract_title_Container_content>
-                        </Container_2_contract_title_Container>
-                        <Container_2_contract_line></Container_2_contract_line>
+                            <Styled.Container_2_contract_title_Container_content>
+                                <Styled.Container_2_contract_title_Container_content_1>진행중 계약서</Styled.Container_2_contract_title_Container_content_1>
+                            </Styled.Container_2_contract_title_Container_content>
+                        </Styled.Container_2_contract_title_Container>
+                        <Styled.Container_2_contract_line></Styled.Container_2_contract_line>
 
-                        <Container_2_contarcts_container>
+                        <Styled.Container_2_contarcts_container>
                             {contractData_2.map((item, index) => (
                                 <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
                                     {localStorage.setItem("contractId", item.contractId.toString());
                                     localStorage.setItem("state", "PROCEED");}} key={index}>
-                                    <Container_2_contarcts_1>
-                                        <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
-                                        <Container_2_contarcts_1_content>{item.content}</Container_2_contarcts_1_content>
-                                        <Container_2_contarcts_1_info>
-                                            <Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Container_2_contarcts_1_info_content>
-                                            <Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Container_2_contarcts_1_info_content>
-                                        </Container_2_contarcts_1_info>
-                                    </Container_2_contarcts_1>
+                                    <Styled.Container_2_contarcts_1>
+                                        <Styled.Container_2_contarcts_1_title>{item.title}</Styled.Container_2_contarcts_1_title>
+                                        <Styled.Container_2_contarcts_1_content>{item.content}</Styled.Container_2_contarcts_1_content>
+                                        <Styled.Container_2_contarcts_1_info>
+                                            <Styled.Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Styled.Container_2_contarcts_1_info_content>
+                                            <Styled.Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Styled.Container_2_contarcts_1_info_content>
+                                        </Styled.Container_2_contarcts_1_info>
+                                    </Styled.Container_2_contarcts_1>
                                 </Link>
                             ))}
-                        </Container_2_contarcts_container>
+                        </Styled.Container_2_contarcts_container>
 
-                    </Container_2_contract_2>
-                    <Container_2_contract_3>
-                        <Container_2_contract_title_Container>
+                    </Styled.Container_2_contract_2>
+                    <Styled.Container_2_contract_3>
+                        <Styled.Container_2_contract_title_Container>
                             <img src="./image/contracts_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
-                            <Container_2_contract_title_Container_content>
-                                <Container_2_contract_title_Container_content_1>체결 계약서</Container_2_contract_title_Container_content_1>
-                            </Container_2_contract_title_Container_content>
-                        </Container_2_contract_title_Container> 
-                        <Container_2_contract_line></Container_2_contract_line>
+                            <Styled.Container_2_contract_title_Container_content>
+                                <Styled.Container_2_contract_title_Container_content_1>체결 계약서</Styled.Container_2_contract_title_Container_content_1>
+                            </Styled.Container_2_contract_title_Container_content>
+                        </Styled.Container_2_contract_title_Container> 
+                        <Styled.Container_2_contract_line></Styled.Container_2_contract_line>
 
-                        <Container_2_contarcts_container>
+                        <Styled.Container_2_contarcts_container>
                             {contractData_3.map((item, index) => (
                                 <Link href={`/contractObject/${item.contractId}`} style={{ textDecoration: 'none' }} onClick={() => 
                                     {localStorage.setItem("contractId", item.contractId.toString());
                                     localStorage.setItem("state", "CONCLUDE");}} key={index}>
-                                    <Container_2_contarcts_1>
-                                        <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
-                                        <Container_2_contarcts_1_content>{item.content}</Container_2_contarcts_1_content>
-                                        <Container_2_contarcts_1_info>
-                                            <Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Container_2_contarcts_1_info_content>
-                                            <Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Container_2_contarcts_1_info_content>
-                                        </Container_2_contarcts_1_info>
-                                    </Container_2_contarcts_1>
+                                    <Styled.Container_2_contarcts_1>
+                                        <Styled.Container_2_contarcts_1_title>{item.title}</Styled.Container_2_contarcts_1_title>
+                                        <Styled.Container_2_contarcts_1_content>{item.content}</Styled.Container_2_contarcts_1_content>
+                                        <Styled.Container_2_contarcts_1_info>
+                                            <Styled.Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Styled.Container_2_contarcts_1_info_content>
+                                            <Styled.Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Styled.Container_2_contarcts_1_info_content>
+                                        </Styled.Container_2_contarcts_1_info>
+                                    </Styled.Container_2_contarcts_1>
                                 </Link>
                             ))}
-                        </Container_2_contarcts_container>
+                        </Styled.Container_2_contarcts_container>
 
-                    </Container_2_contract_3>
+                    </Styled.Container_2_contract_3>
                     
-                </Container_2_contract>
+                </Styled.Container_2_contract>
 
-            </Container_2>
-            <Container_title_2>
-                <Container_title_2_name>🔗파기 계약 현황</Container_title_2_name>
-            </Container_title_2>
+            </Styled.Container_2>
+            <Styled.Container_title_2>
+                <Styled.Container_title_2_name>🔗파기 계약 현황</Styled.Container_title_2_name>
+            </Styled.Container_title_2>
             {/* 파기 */}
-            <Container_3>
-                <Container_3_contract>
-                    <Container_3_contract_1>
-                        <Container_2_contract_title_Container>
+            <Styled.Container_3>
+                <Styled.Container_3_contract>
+                    <Styled.Container_3_contract_1>
+                        <Styled.Container_2_contract_title_Container>
                             <img src="./image/login_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
-                            <Container_2_contract_title_Container_content>
-                                <Container_2_contract_title_Container_content_1>파기 진행중 계약서</Container_2_contract_title_Container_content_1>
-                            </Container_2_contract_title_Container_content>
-                        </Container_2_contract_title_Container>
-                        <Container_2_contract_line></Container_2_contract_line>
+                            <Styled.Container_2_contract_title_Container_content>
+                                <Styled.Container_2_contract_title_Container_content_1>파기 진행중 계약서</Styled.Container_2_contract_title_Container_content_1>
+                            </Styled.Container_2_contract_title_Container_content>
+                        </Styled.Container_2_contract_title_Container>
+                        <Styled.Container_2_contract_line></Styled.Container_2_contract_line>
 
-                        <Container_2_contarcts_container>
+                        <Styled.Container_2_contarcts_container>
                             {contractData_4.map((item, index) => (
                                 <Link href={`/cancelContractObject/${item.cancelContractId}`} style={{ textDecoration: 'none' }} onClick={() => 
                                     {localStorage.setItem("contractId", item.cancelContractId.toString());
                                     localStorage.setItem("state", "CANCELING");}} key={index}>
-                                    <Container_2_contarcts_1>
-                                        <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
-                                        <Container_2_contarcts_1_content>{item.content}</Container_2_contarcts_1_content>
-                                        <Container_2_contarcts_1_info>
-                                            <Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Container_2_contarcts_1_info_content>
-                                            <Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Container_2_contarcts_1_info_content>
-                                        </Container_2_contarcts_1_info>                            
-                                    </Container_2_contarcts_1>
+                                    <Styled.Container_2_contarcts_1>
+                                        <Styled.Container_2_contarcts_1_title>{item.title}</Styled.Container_2_contarcts_1_title>
+                                        <Styled.Container_2_contarcts_1_content>{item.content}</Styled.Container_2_contarcts_1_content>
+                                        <Styled.Container_2_contarcts_1_info>
+                                            <Styled.Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Styled.Container_2_contarcts_1_info_content>
+                                            <Styled.Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Styled.Container_2_contarcts_1_info_content>
+                                        </Styled.Container_2_contarcts_1_info>                            
+                                    </Styled.Container_2_contarcts_1>
                                 </Link>
                             ))}
-                        </Container_2_contarcts_container>
-                    </Container_3_contract_1>
+                        </Styled.Container_2_contarcts_container>
+                    </Styled.Container_3_contract_1>
 
-                    <Container_3_contract_2>
-                    <Container_2_contract_title_Container>
+                    <Styled.Container_3_contract_2>
+                    <Styled.Container_2_contract_title_Container>
                             <img src="./image/login_logo.png" style={{ width: "30px", height: "30px", marginLeft:"10px", marginTop:"10px"}}></img>
-                            <Container_2_contract_title_Container_content>
-                                <Container_2_contract_title_Container_content_1>파기 체결 계약서</Container_2_contract_title_Container_content_1>
-                            </Container_2_contract_title_Container_content>
-                        </Container_2_contract_title_Container>
-                        <Container_2_contract_line></Container_2_contract_line>
+                            <Styled.Container_2_contract_title_Container_content>
+                                <Styled.Container_2_contract_title_Container_content_1>파기 체결 계약서</Styled.Container_2_contract_title_Container_content_1>
+                            </Styled.Container_2_contract_title_Container_content>
+                        </Styled.Container_2_contract_title_Container>
+                        <Styled.Container_2_contract_line></Styled.Container_2_contract_line>
 
-                        <Container_2_contarcts_container>
+                        <Styled.Container_2_contarcts_container>
                             {contractData_5.map((item, index) => (
                                 <Link href={`/cancelContractObject/${item.cancelContractId}`} style={{ textDecoration: 'none' }} onClick={() => 
                                     {localStorage.setItem("contractId", item.cancelContractId.toString());
                                     localStorage.setItem("state", "CANCELED");}} key={index}>
-                                    <Container_2_contarcts_1>
-                                        <Container_2_contarcts_1_title>{item.title}</Container_2_contarcts_1_title>
-                                        <Container_2_contarcts_1_content>{item.content}</Container_2_contarcts_1_content>
-                                        <Container_2_contarcts_1_info>
-                                            <Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Container_2_contarcts_1_info_content>
-                                            <Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Container_2_contarcts_1_info_content>
-                                        </Container_2_contarcts_1_info>                            
-                                    </Container_2_contarcts_1>
+                                    <Styled.Container_2_contarcts_1>
+                                        <Styled.Container_2_contarcts_1_title>{item.title}</Styled.Container_2_contarcts_1_title>
+                                        <Styled.Container_2_contarcts_1_content>{item.content}</Styled.Container_2_contarcts_1_content>
+                                        <Styled.Container_2_contarcts_1_info>
+                                            <Styled.Container_2_contarcts_1_info_content>작성일 : {item.createdAt.split("T")[0]}</Styled.Container_2_contarcts_1_info_content>
+                                            <Styled.Container_2_contarcts_1_info_content>수정일 : {item.modifiedAt.split("T")[0]}</Styled.Container_2_contarcts_1_info_content>
+                                        </Styled.Container_2_contarcts_1_info>                            
+                                    </Styled.Container_2_contarcts_1>
                                 </Link>
                             ))}
-                        </Container_2_contarcts_container>
-                    </Container_3_contract_2>
-                </Container_3_contract>
-            </Container_3>
-            <Footer></Footer>
+                        </Styled.Container_2_contarcts_container>
+                    </Styled.Container_3_contract_2>
+                </Styled.Container_3_contract>
+            </Styled.Container_3>
+            <Styled.Footer></Styled.Footer>
 
         </div>
     );
 };
 
-const Banner_img = styled.img`
-    position  : relative;
-    width : 1300px;
-    height : 330px;
-    margin-top : 100px;
-    left : 50%;
-    transform : translate(50%);
-    margin-left : -1300px;
-    border-radius : 5px;
 
-`;
-const Container_title_1 = styled.div`
-    // background : red;
-    margin-top : 10px;
-
-`
-const Container_title_1_name = styled.div`
-    position : relative;
-    // background : blue;
-    width : 1300px;
-    font-size : 20px;
-    color : #8f8f8f;
-    left : 50%;
-    transform : translate(-50%);
-
-    
-    margin-top : 15px;
-    border-bottom: 2px solid #e3e3e3;
-`
-
-const Container_2 = styled.div`
-    // position : absolute;
-    // background : blue;
-    height: 280px;
-    width: 100%;
-    margin-top : 15px;
-`;
-
-const Container_2_contract = styled.div`
-    position : absolute;
-    // background : green;
-    height: 280px;
-    width: 1300px;
-
-
-    left : 50%;
-    transform : translate(-50%);
-
-    display : flex;
-    justify-content : space-between;
-`;
-const Container_2_contract_1 = styled.div`
-    background : white;
-    height: 100%;
-    width: 400px;
-    border-radius : 3px;
-    box-shadow: 1px 1px 6px 2px rgb(196, 196, 196);
-`;
-const Container_2_contract_2 = styled.div`
-    background : white;
-    height: 100%;
-    width: 400px;
-    border-radius : 3px;
-    box-shadow: 1px 1px 6px 2px rgb(196, 196, 196);
-`;
-const Container_2_contract_3 = styled.div`
-    background : white;
-    height: 100%;
-    width: 400px;
-    border-radius : 3px;
-    box-shadow: 1px 1px 6px 2px rgb(196, 196, 196);
-`;
-const Container_2_contract_title_Container = styled.div`
-    // background : green;
-    height: 50px;
-    width: 100%;
-    display : flex;
-`;
-const Container_2_contract_title_Container_content = styled.div`
-    // background : red;
-    height: 100%;
-    width: 200px;
-    margin-left : 60px;
-`;
-const Container_2_contract_title_Container_content_1 = styled.div`
-    // background : aqua;
-    height: fit-content;
-    width: 100%;
-    margin-top : 10px;
-
-    font-size : 20px;
-    font-weight : bold;
-    display : flex;
-    justify-content : center;
-    align-items: center;
-`;
-const Container_2_contract_line = styled.div`
-    background : #d1d1d1;
-    height: 2px;
-    width: 380px;
-    margin-left : 10px;
-`;
-const Container_2_contarcts_container = styled.div`
-    position : absolute;
-    // background : green;
-    height: 220px;
-    width: 380px;
-    margin-left : 10px;
-    overflow : auto;
-
-    /* 스크롤바 스타일링 */
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-    
-    &::-webkit-scrollbar {
-        width: 8px;
-    }
-    
-    &::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, 0.2);
-        border-radius: 4px;
-    }
-    
-    &::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(0, 0, 0, 0.4);
-    }
-    
-    &::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-
-`;
-const Container_2_contarcts_1 = styled.div`
-    position : relative;
-    background : #efefef;
-    height: 100px;
-    width: 100%;
-    margin-top : 10px;
-    cursor : pointer;
-
-    &:hover {
-        filter: brightness(90%); 
-    }
-    color : black;
-
-`;
-const Container_2_contarcts_1_title = styled.div`
-    
-    // background : blue;
-    height: 40px;
-    width: 100%;
-    margin-top : 7px;
-
-    display : flex;
-    justify-content : center;
-    align-items: center;
-
-    font-weight : bold;
-    font-size : 20px;
-`;
-const Container_2_contarcts_1_content = styled.div`
-    // background : yellow;
-    height: 30px;
-    width: 100%;
-
-    display : flex;
-    justify-content : center;
-    align-items: center;
-
-    font-size : 12px;
-    color : #a9a9a9;
-`;
-const Container_2_contarcts_1_info = styled.div`
-    // background : yellow;
-    height: 30px;
-    width: 100%;
-    display : flex;
-    justify-content : center;
-
-`;
-const Container_2_contarcts_1_info_content_id = styled.div`
-    // background : blue;
-    height: 100%;
-    width: 80px;
-    display : flex;
-    justify-content : center;
-    align-items : center;
-    font-size : 12px;
-`;
-const Container_2_contarcts_1_info_content = styled.div`
-    // background : blue;
-    height: 100%;
-    width: 170px;
-    display : flex;
-    justify-content : center;
-    align-items : center;
-    font-size : 12px;
-`;
-const Container_3_contract_write = styled.div`
-    position : absolute;
-    // background : yellow;
-    left : 50%;
-    transform : translate(-50%);
-    height: 40px;
-    width: 340px;
-    margin-top : -70px;
-    display : flex;
-    justify-content : center;
-    z-index : 0;
-`;
-const Container_3_contract_write_btn = styled.div`
-    position : relative;
-    background : #ffffff;
-    height: 100%;
-    width: 160px;
-
-    border:none;
-    cursor : pointer;
-
-    font-size : 15px;
-    font-weight: bold;
-    color : #435DF1;
-
-    left : 50%;
-    transform : translate(-50%);
-
-    border-radius : 4px;
-
-    display : flex;
-    justify-content : center;
-    align-items : center;
-`;
-
-const Container_title_2 = styled.div`
-    // background : red;
-    margin-top : 30px;
-
-`
-const Container_title_2_name = styled.div`
-    position : relative;
-    // background : blue;
-    width : 1300px;
-    font-size : 20px;
-    color : #8f8f8f;
-    left : 50%;
-    transform : translate(-50%);
-
-    border-bottom: 2px solid #e3e3e3;
-`
-const Container_3 = styled.div`
-    // position : absolute;
-    // background : blue;
-    height: 280px;
-    width: 100%;
-    margin-top : 15px;
-`;
-const Container_3_contract = styled.div`
-    position : absolute;
-    // background : green;
-    height: 280px;
-    width: 850px;
-
-
-    left : 50%;
-    transform : translate(-76.5%);
-
-    display : flex;
-    justify-content : space-between;
-`;
-const Container_3_contract_1 = styled.div`
-    background : white;
-    height: 100%;
-    width: 400px;
-    border-radius : 3px;
-    box-shadow: 1px 1px 6px 2px rgb(196, 196, 196);
-`;
-const Container_3_contract_2 = styled.div`
-    background : white;
-    height: 100%;
-    width: 400px;
-    border-radius : 3px;
-    box-shadow: 1px 1px 6px 2px rgb(196, 196, 196);
-`;
-const Footer = styled.div`
-    // background : red;
-    height : 20px;
-    width : 100%
-`
 export default Contracts;
